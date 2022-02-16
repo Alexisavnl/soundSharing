@@ -1,13 +1,12 @@
-import 'dart:ffi';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'track.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'home.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
-  runApp(CreatePost());
+  runApp(const CreatePost());
 }
 
 class CreatePost extends StatefulWidget {
@@ -20,12 +19,19 @@ class CreatePost extends StatefulWidget {
 class _CreatePostState extends State<CreatePost> {
   AudioPlayer audioPlayer = AudioPlayer();
   bool isPlaying = false;
+  String artist = '';
+  String coverMax = '';
+  String preview = '';
+  String tilte = '';
+  CollectionReference posts = FirebaseFirestore.instance.collection('posts');
   @override
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context)?.settings.arguments as Track;
+    artist = arguments.artist.name;
+    coverMax = arguments.album.pictureBig;
+    preview = arguments.previewUrl;
+    tilte = arguments.title;
     initPlayeur(arguments.previewUrl);
-
-    print(arguments.title);
     return WillPopScope(
         child: MaterialApp(
           title: "Create post",
@@ -200,6 +206,15 @@ class _CreatePostState extends State<CreatePost> {
             ),
             onPressed: () {
               audioPlayer.stop();
+              posts
+                  .add({
+                    'artist': artist,
+                    'coverMax': coverMax,
+                    'preview': preview,
+                    'tilte': tilte
+                  })
+                  .then((value) => print('Post Added'))
+                  .catchError((error) => print('Failed to add post: $error'));
               Navigator.pushNamed(context, '/home');
             },
             child: const Text('SEND'),

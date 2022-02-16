@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -11,42 +12,51 @@ import 'track.dart';
 import 'home.dart';
 
 Future<List<Track>> fetchTracks(http.Client client, trackname) async {
-  final response = await client
-      .get(Uri.parse('https://api.deezer.com/search/track?q=' + trackname));
+  final response = await client.get(Uri.parse(
+      'https://api.deezer.com/search/track?q=' +
+          trackname +
+          '&index=0&limit=100'));
   // Use the compute function to run parsePhotos in a separate isolate.
-  //print(response.body);
   return compute(parseTracks, response.body);
 }
 
-// A function that converts a response body into a List<Photo>.
 List<Track> parseTracks(String responseBody) {
   final parsed = jsonDecode(responseBody)['data'].cast<Map<String, dynamic>>();
   return parsed.map<Track>((json) => Track.fromJson(json)).toList();
 }
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(title: const Text('Alexis >>> Martin')),
-          body: Center(child: ListSearch())),
+          body: const Center(child: ListSearch())),
       routes: {
-        "/createPost": (context) => CreatePost(),
-        '/home': (context) => const Home(),
+        "/createPost": (context) => const CreatePost(),
+        '/home': (context) => Home(),
       },
     );
   }
 }
 
 class ListSearch extends StatefulWidget {
+  const ListSearch({Key? key}) : super(key: key);
+
+  @override
   ListSearchState createState() => ListSearchState();
 }
 
 class ListSearchState extends State<ListSearch> {
-  TextEditingController _textController = TextEditingController();
+  final TextEditingController _textController = TextEditingController();
   List<Track> tracks = List.empty();
   AudioPlayer audioPlayer = AudioPlayer();
 
@@ -91,7 +101,7 @@ class ListSearchState extends State<ListSearch> {
                   padding: const EdgeInsets.all(0),
                   itemCount: tracks.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
+                    return SizedBox(
                         height: 60,
                         child: InkWell(
                             child: ListTile(
@@ -100,7 +110,7 @@ class ListSearchState extends State<ListSearch> {
                                 leading: InkWell(
                                     child: tracks[index].album.pictureSmall ==
                                             null
-                                        ? Text('')
+                                        ? const Text('')
                                         : Image.network(
                                             tracks[index].album.pictureSmall),
                                     onTap: () =>
@@ -113,27 +123,5 @@ class ListSearchState extends State<ListSearch> {
         ],
       ),
     );
-  }
-}
-
-class TracksList extends StatelessWidget {
-  const TracksList({Key? key, required this.tracks}) : super(key: key);
-
-  final List<Track> tracks;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-        padding: const EdgeInsets.all(0),
-        itemCount: tracks.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            height: 60,
-            child: ListTile(
-                title: Text(tracks[index].title),
-                subtitle: Text(tracks[index].artist.name),
-                leading: Image.network(tracks[index].album.pictureSmall)),
-          );
-        });
   }
 }

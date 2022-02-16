@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "319724448727",
+    "project_id": "dasong-3713a",
+    "storage_bucket": "dasong-3713a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319724448727:android:06fad0438a8fff7b6e7992",
+        "android_client_info": {
+          "package_name": "com.alexisavenel.da_song"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "319724448727-tsgqffk6lsufbrgsu6vohunj3efr49mr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGnTcXmiKaChAnVXRHIqe23_OlDUv11Jo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "319724448727-tsgqffk6lsufbrgsu6vohunj3efr49mr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
