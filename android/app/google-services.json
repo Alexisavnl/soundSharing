@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "319724448727-ji9v3c1hf3m90nenev7e60fn8po5g4be.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alexisavenel.da_song",
+            "certificate_hash": "071bd2d367fe4c68b68c3478e14247990cdaf7c0"
+          }
+        },
+        {
           "client_id": "319724448727-tsgqffk6lsufbrgsu6vohunj3efr49mr.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "319724448727-tsgqffk6lsufbrgsu6vohunj3efr49mr.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "319724448727-hlhbe01c9584mb4uqk3me413isqdcl0h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.alexisavenel.daSong"
+              }
             }
           ]
         }

@@ -3,15 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'createPost.dart';
+import 'services/auth.dart';
 
 Future<void> main() async {
-  runApp(Home());
+  runApp(HomePost());
 }
 
-class Home extends StatelessWidget {
+class HomePost extends StatelessWidget {
   final Stream<QuerySnapshot> user =
       FirebaseFirestore.instance.collection('posts').snapshots();
-
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,8 +42,12 @@ class Home extends StatelessWidget {
                           return SizedBox(
                               child: InkWell(
                                   child: ListTile(
-                            title: Image.network(data.docs[index]['coverMax']),
-                          ))
+                                    title: Image.network(data.docs[index]['coverMax']),
+                          ),
+                          onTap: () async{
+            await _auth.signOut();
+
+          },)
                               //'My name is ${data.docs[index]['name']}'
                               );
                         });
