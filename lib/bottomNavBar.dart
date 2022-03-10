@@ -3,7 +3,7 @@ import 'package:da_song/home.dart';
 import 'package:da_song/search_track.dart';
 import 'package:flutter/material.dart';
 import 'package:da_song/services/auth.dart';
-import 'package:da_song/screens/login_page/login_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 class BottomNavBar extends StatefulWidget {
@@ -35,7 +35,12 @@ class _BottomNavBar extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: tabs.elementAt(_selectedIndex),
-     
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(22, 27, 34, 1),
+          title: const Text('DaSong.', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)), 
+          toolbarTextStyle: GoogleFonts.poppins(), titleTextStyle: GoogleFonts.poppins(),
+          
+        ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(

@@ -37,9 +37,9 @@ class searchTrack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(title: const Text('Alexis >>> Martin')),
-          body: const Center(child: ListSearch())),
+      home: const Scaffold(
+          body: Center(child: ListSearch())),
+          debugShowCheckedModeBanner: false,
       routes: {
         "/createPost": (context) => const CreatePost(),
         '/home': (context) => HomePost(),

@@ -24,8 +24,10 @@ class _CreatePostState extends State<CreatePost> {
   String preview = '';
   String tilte = '';
   CollectionReference posts = FirebaseFirestore.instance.collection('posts');
+
   @override
   Widget build(BuildContext context) {
+    
     final arguments = ModalRoute.of(context)?.settings.arguments as Track;
     artist = arguments.artist.name;
     coverMax = arguments.album.pictureBig;
@@ -34,6 +36,7 @@ class _CreatePostState extends State<CreatePost> {
     initPlayeur(arguments.previewUrl);
     return WillPopScope(
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: "Create post",
           home: Scaffold(
             body: SingleChildScrollView(
@@ -54,9 +57,6 @@ class _CreatePostState extends State<CreatePost> {
   }
 
   Future<bool> _willPopCallback() async {
-    // await showDialog or Show add banners or whatever
-    // then
-    print('ffd');
     await audioPlayer.stop();
     return Future.value(true);
   }
@@ -72,8 +72,6 @@ class _CreatePostState extends State<CreatePost> {
         onTap: () {
           setState(() {
             audioPlayer.playing ? audioPlayer.pause() : audioPlayer.play();
-
-            print(audioPlayer.playing);
             isPlaying = audioPlayer.playing;
           });
         },
@@ -86,7 +84,7 @@ class _CreatePostState extends State<CreatePost> {
 
   Widget _cover(String cover) {
     return Container(
-      margin: const EdgeInsets.only(top: 150),
+      margin: const EdgeInsets.only(top: 30),
       width: double.infinity,
       alignment: Alignment.center,
       child: ClipRRect(

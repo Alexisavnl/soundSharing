@@ -12,6 +12,7 @@ class Account extends StatelessWidget {
     return const MaterialApp(
       title: 'home',
       home: MyStatefulWidget(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -28,12 +29,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.blue,
-          elevation: 0.0,
-          title: const Text('Sign in'),
-        ),
+      backgroundColor: Colors.white,
       body: Center(
           child: ElevatedButton(
             child: const Text('sign out'),
