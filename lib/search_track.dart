@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
@@ -84,6 +85,12 @@ class ListSearchState extends State<ListSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(22, 27, 34, 1),
+        title: const Text('DaSong.', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+        toolbarTextStyle: GoogleFonts.poppins(), titleTextStyle: GoogleFonts.poppins(),
+
+      ),
       body: Column(
         children: <Widget>[
           Padding(

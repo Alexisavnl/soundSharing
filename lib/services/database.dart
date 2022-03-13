@@ -7,8 +7,8 @@ class DatabaseService{
   DatabaseService(this.uid);
 
   final CollectionReference<Map<String, dynamic>> userCollection =
-  FirebaseFirestore.instance.collection("users");
-
+  FirebaseFirestore.instance.collection("user");
+/*
   Future<void> saveUser(String firstName,String lastName, String email, String profilePicture, String pseudo) async{
     return await userCollection.doc(uid).set({
       'firstName': firstName,
@@ -19,21 +19,30 @@ class DatabaseService{
     });
   }
 
+ */
+
   UserData _userFromSnapshot(DocumentSnapshot<Map<String,dynamic>> snapshot){
     var data = snapshot.data();
     if(data == null) throw Exception("user not found");
     return UserData(
-      uid: uid,
+      //uid: uid,
       firstName:data['firstName'],
-      lastName:data['lastName'],
-      email: data['email'],
-      profilePicture: data['profilePicture'],
-      pseudo: data['pseudo'],
+      //lastName:data['lastName'],
+      //email: data['email'],
+      //profilePicture: data['profilePicture'],
+      //pseudo: data['pseudo'],
     );
   }
+
   Stream<UserData> get user{
     return userCollection.doc(uid).snapshots().map(_userFromSnapshot);
   }
+
+  Stream<UserData> friend(String id){
+    return userCollection.doc(uid).collection('friend').doc(id).snapshots().map(_userFromSnapshot);
+  }
+
+
   List<UserData> _userListFromSnapshot(QuerySnapshot<Map<String, dynamic>> snapshot) {
     return snapshot.docs.map((doc) {
       return _userFromSnapshot(doc);
@@ -42,6 +51,18 @@ class DatabaseService{
 
   Stream<List<UserData>> get users {
     return userCollection.snapshots().map(_userListFromSnapshot);
+  }
+
+  Stream<List<UserData>> get friends {
+    Stream<List<UserData>> list = [] as Stream<List<UserData>>;
+    users.forEach((user) {
+      friends.forEach((friend) {
+        if(user == friend){
+          list.add(user);
+        }
+      });
+    });
+    return list;
   }
 
 }

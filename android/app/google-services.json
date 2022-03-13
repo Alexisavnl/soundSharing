@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "319724448727-g0fv053r873dlrikume01c4arucdc92u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alexisavenel.da_song",
+            "certificate_hash": "33e5d6c710f6c7a99be055735b136c2e8d10eb25"
+          }
+        },
+        {
           "client_id": "319724448727-ji9v3c1hf3m90nenev7e60fn8po5g4be.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

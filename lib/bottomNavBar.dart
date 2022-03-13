@@ -35,12 +35,6 @@ class _BottomNavBar extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: tabs.elementAt(_selectedIndex),
-        appBar: AppBar(
-          backgroundColor: Color.fromRGBO(22, 27, 34, 1),
-          title: const Text('DaSong.', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)), 
-          toolbarTextStyle: GoogleFonts.poppins(), titleTextStyle: GoogleFonts.poppins(),
-          
-        ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(

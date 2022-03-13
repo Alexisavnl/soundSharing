@@ -28,9 +28,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
+    super.dispose();
     emailController.dispose();
     passwordController.dispose();
-    super.dispose();
   }
 
   void toggleView() {
@@ -45,15 +45,24 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
+      backgroundColor: Colors.white70,
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
+        padding: const EdgeInsets.all(3.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          color: Colors.white54,
+        ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             DelayedAnimation(
               delay: 500,
               child: SizedBox(
                 height: 300,
-                child: Image.asset('images/app_logo.png'),
+                child: Image.asset('images/android.gif', height: 200,
+                  width: 200),
               ),
             ),
             DelayedAnimation(
@@ -84,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                           TextFormField(
                             controller: passwordController,
                             validator: (value) => value != null &&
-                                    value.length < 6
+                                value.length < 6
                                 ? "Enter a password with at least 6 characters"
                                 : null,
                             obscureText: _obsureText,
@@ -129,6 +138,13 @@ class _LoginPageState extends State<LoginPage> {
                     ElevatedButton(
                       onPressed: () async {
                         UserCredential user = await _auth.signInWithGoogle();
+                        if(user != null){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Home()),
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                           shape: const StadiumBorder(),
