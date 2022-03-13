@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'createPost.dart';
+import 'models/myUser.dart';
 import 'services/auth.dart';
+import 'package:da_song/services/database.dart';
 
 Future<void> main() async {
   runApp(HomePost());
@@ -14,17 +18,11 @@ class HomePost extends StatelessWidget {
   final Stream<QuerySnapshot> database =
       FirebaseFirestore.instance.collection('posts').snapshots();
   final AuthService _auth = AuthService();
-
   @override
   Widget build(BuildContext context) {
+    String user = Provider.of<MyUser?>(context).toString();
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromRGBO(22, 27, 34, 1),
-        title: const Text('DaSong.',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
-        toolbarTextStyle: GoogleFonts.poppins(),
-        titleTextStyle: GoogleFonts.poppins(),
-      ),
       body: Column(
         children: <Widget>[
           const Padding(padding: EdgeInsets.all(12.0)),
@@ -55,7 +53,7 @@ class HomePost extends StatelessWidget {
                                   Image.network(data.docs[index]['coverMax']),
                             ),
                             onTap: () async {
-                              await _auth.signOut();
+                              await DatabaseService(user).uidUser();
                             },
                           )
                               //'My name is ${data.docs[index]['name']}'

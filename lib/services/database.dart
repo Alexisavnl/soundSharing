@@ -1,13 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import '../models/userData.dart';
 
-class DatabaseService{
+class DatabaseService {
   final String uid;
 
   DatabaseService(this.uid);
 
-  final CollectionReference<Map<String, dynamic>> userCollection =
-  FirebaseFirestore.instance.collection("user");
 /*
   Future<void> saveUser(String firstName,String lastName, String email, String profilePicture, String pseudo) async{
     return await userCollection.doc(uid).set({
@@ -21,12 +20,35 @@ class DatabaseService{
 
  */
 
-  UserData _userFromSnapshot(DocumentSnapshot<Map<String,dynamic>> snapshot){
+  Future<int> uidUser() async {
+    /*TransactionResult result =
+        await _usersRef.child(uid).runTransaction((Object? useruid) {
+      if (useruid != null) {
+        return Transaction.abort();
+      }
+    });
+    print('Snapshot? ${result.snapshot}');*/
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? users = auth.currentUser;
+    final uid = users?.uid;
+    print(uid);
+DatabaseReference ref = FirebaseDatabase.instance.ref("friend/$uid");
+
+// Get the data once
+DatabaseEvent event = await ref.once();
+
+// Print the data of the snapshot
+print(event.snapshot.value);
+
+    return 1;
+  }
+
+  /*UserData _userFromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
     var data = snapshot.data();
-    if(data == null) throw Exception("user not found");
+    if (data == null) throw Exception("user not found");
     return UserData(
       //uid: uid,
-      firstName:data['firstName'],
+      firstName: data['firstName'],
       //lastName:data['lastName'],
       //email: data['email'],
       //profilePicture: data['profilePicture'],
@@ -34,16 +56,21 @@ class DatabaseService{
     );
   }
 
-  Stream<UserData> get user{
+  Stream<UserData> get user {
     return userCollection.doc(uid).snapshots().map(_userFromSnapshot);
   }
 
-  Stream<UserData> friend(String id){
-    return userCollection.doc(uid).collection('friend').doc(id).snapshots().map(_userFromSnapshot);
+  Stream<UserData> friend(String id) {
+    return userCollection
+        .doc(uid)
+        .collection('friend')
+        .doc(id)
+        .snapshots()
+        .map(_userFromSnapshot);
   }
 
-
-  List<UserData> _userListFromSnapshot(QuerySnapshot<Map<String, dynamic>> snapshot) {
+  List<UserData> _userListFromSnapshot(
+      QuerySnapshot<Map<String, dynamic>> snapshot) {
     return snapshot.docs.map((doc) {
       return _userFromSnapshot(doc);
     }).toList();
@@ -57,12 +84,11 @@ class DatabaseService{
     Stream<List<UserData>> list = [] as Stream<List<UserData>>;
     users.forEach((user) {
       friends.forEach((friend) {
-        if(user == friend){
+        if (user == friend) {
           list.add(user);
         }
       });
     });
     return list;
-  }
-
+  }*/
 }
