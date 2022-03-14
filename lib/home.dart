@@ -53,7 +53,7 @@ class HomePost extends StatelessWidget {
                                   Image.network(data.docs[index]['coverMax']),
                             ),
                             onTap: () async {
-                              await DatabaseService(user).uidUser();
+                              DatabaseService(user).user;
                             },
                           )
                               //'My name is ${data.docs[index]['name']}'

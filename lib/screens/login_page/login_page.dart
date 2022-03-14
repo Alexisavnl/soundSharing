@@ -1,12 +1,14 @@
 import 'package:da_song/BottomNavBar.dart';
+import 'package:da_song/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../common/delayed_animation.dart';
 import '../../common/theme_helper.dart';
 import '../../models/myUser.dart';
+import '../home/home.dart';
 import '../register_page/register_page.dart';
 import '../../services/auth.dart';
-import 'package:da_song/screens/home/home.dart';
+import '../wrapper.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -46,13 +48,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white70,
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
-        padding: const EdgeInsets.all(3.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30.0),
-          color: Colors.white54,
-        ),
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -61,8 +57,8 @@ class _LoginPageState extends State<LoginPage> {
               delay: 500,
               child: SizedBox(
                 height: 300,
-                child: Image.asset('images/android.gif', height: 200,
-                  width: 200),
+                child:
+                    Image.asset('images/android.gif', height: 200, width: 200),
               ),
             ),
             DelayedAnimation(
@@ -93,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                           TextFormField(
                             controller: passwordController,
                             validator: (value) => value != null &&
-                                value.length < 6
+                                    value.length < 6
                                 ? "Enter a password with at least 6 characters"
                                 : null,
                             obscureText: _obsureText,
@@ -138,11 +134,11 @@ class _LoginPageState extends State<LoginPage> {
                     ElevatedButton(
                       onPressed: () async {
                         UserCredential user = await _auth.signInWithGoogle();
-                        if(user != null){
+                        if (user != null) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Home()),
+                                builder: (context) => const Wrapper()),
                           );
                         }
                       },
@@ -200,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
       MyUser? user = await _auth.signInWithEmailAndPassword(email, password);
       if (user != null) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Home()));
+            context, MaterialPageRoute(builder: (context) => Wrapper()));
       } else {
         setState(() {
           loading = false;

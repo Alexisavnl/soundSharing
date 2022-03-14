@@ -1,3 +1,4 @@
+import 'package:da_song/screens/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../services/auth.dart';
@@ -57,10 +58,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 child: const Text('sign out'),
                 onPressed: () async {
                   await _auth.signOut();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
-                  );
+                  Navigator.of(context, rootNavigator: true).pushReplacement(
+                      MaterialPageRoute(builder: (context) => new Wrapper()));
+                },
+              ),
+            ),
+            Center(
+              child: ElevatedButton(
+                child: const Text('sign out'),
+                onPressed: () async {
+                  await _auth.signOut();
+                  Navigator.of(context, rootNavigator: true).pushReplacement(
+                      MaterialPageRoute(builder: (context) => new Wrapper()));
                 },
               ),
             )

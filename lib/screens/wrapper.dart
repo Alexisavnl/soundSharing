@@ -6,7 +6,6 @@ import '../screens/login_page/login_page.dart';
 import 'package:provider/provider.dart';
 import 'package:da_song/BottomNavBar.dart';
 
-
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key}) : super(key: key);
 
@@ -16,7 +15,7 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return const LoginPage();
     } else {
-      return BottomNavBar();
+      return const BottomNavBar();
     }
   }
 }

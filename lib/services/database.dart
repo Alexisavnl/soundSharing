@@ -4,8 +4,12 @@ import '../models/userData.dart';
 
 class DatabaseService {
   final String uid;
-
-  DatabaseService(this.uid);
+  late final FirebaseAuth auth;
+  late final User? user;
+  DatabaseService(this.uid) {
+    auth = FirebaseAuth.instance;
+    user = auth.currentUser;
+  }
 
 /*
   Future<void> saveUser(String firstName,String lastName, String email, String profilePicture, String pseudo) async{
@@ -20,27 +24,25 @@ class DatabaseService {
 
  */
 
-  Future<int> uidUser() async {
-    /*TransactionResult result =
-        await _usersRef.child(uid).runTransaction((Object? useruid) {
-      if (useruid != null) {
-        return Transaction.abort();
-      }
-    });
-    print('Snapshot? ${result.snapshot}');*/
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final User? users = auth.currentUser;
-    final uid = users?.uid;
-    print(uid);
-DatabaseReference ref = FirebaseDatabase.instance.ref("friend/$uid");
+  Future<List<String>> uidFriends() async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref("friend/$uid");
 
-// Get the data once
-DatabaseEvent event = await ref.once();
+    DatabaseEvent event = await ref.once();
+    List<String> uidFriends = [];
+    for (var item in event.snapshot.children) {
+      uidFriends.add(item.toString());
+    }
+    return uidFriends;
+  }
 
-// Print the data of the snapshot
-print(event.snapshot.value);
-
-    return 1;
+  void nameOfFirends(List<String> list) async {
+    print(user?.displayName);
+    for (var item in list) {
+      //item.displayName;
+    }
+    /*
+auth.getUser(uid)
+    return */
   }
 
   /*UserData _userFromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
