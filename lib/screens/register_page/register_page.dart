@@ -1,3 +1,4 @@
+import 'package:da_song/screens/wrapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../common/loading.dart';
@@ -246,7 +247,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           await _auth.registerUserWithEmailAndPassword(email, password);
       if (user != null) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => BottomAppBar()));
+            context, MaterialPageRoute(builder: (context) => Wrapper()));
       } else {
         setState(() {
           loading = false;
