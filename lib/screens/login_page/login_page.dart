@@ -1,6 +1,7 @@
 import 'package:da_song/BottomNavBar.dart';
 import 'package:da_song/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../../common/delayed_animation.dart';
 import '../../common/theme_helper.dart';
@@ -135,6 +136,12 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () async {
                         UserCredential user = await _auth.signInWithGoogle();
                         if (user != null) {
+                          DatabaseReference ref = FirebaseDatabase.instance.ref('users');
+                          String uid = FirebaseAuth.instance.currentUser!.uid;
+                          await ref.child(uid).update({
+                            "uid": user.user?.uid,
+                            "pseudo": user.user?.displayName,
+                          });
                           Navigator.push(
                             context,
                             MaterialPageRoute(

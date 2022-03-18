@@ -1,4 +1,6 @@
 import 'package:da_song/screens/wrapper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../common/loading.dart';
@@ -241,11 +243,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
       setState(() {
         loading = true;
       });
+      var pseudo = pseudoController.value.text.trim();
       var password = passwordController.value.text.trim();
       var email = emailController.value.text.trim();
       MyUser? user =
           await _auth.registerUserWithEmailAndPassword(email, password);
+      String uid = FirebaseAuth.instance.currentUser!.uid;
       if (user != null) {
+        DatabaseReference ref = FirebaseDatabase.instance.ref("users/$uid");
+        await ref.set({"pseudo": pseudo, "uid": uid});
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Wrapper()));
       } else {
