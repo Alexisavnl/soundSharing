@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:da_song/resources/firestore_methods.dart';
+import 'package:da_song/screens/comments_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
@@ -9,6 +11,7 @@ import 'createPost.dart';
 import 'models/myUser.dart';
 import 'services/auth.dart';
 import 'package:da_song/services/database.dart';
+import 'package:just_audio/just_audio.dart';
 
 Future<void> main() async {
   runApp(HomePost());
@@ -20,8 +23,10 @@ class HomePost extends StatelessWidget {
   final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
-    String user = Provider.of<MyUser?>(context).toString();
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User user = FirebaseAuth.instance.currentUser!;
 
+    AudioPlayer audioPlayer = AudioPlayer();
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -41,8 +46,115 @@ class HomePost extends StatelessWidget {
                     }
 
                     final data = snapshot.requireData;
-
+                    print(data.docs[0]['uid'].toString());
                     return ListView.builder(
+                        padding: const EdgeInsets.all(0),
+                        itemCount: data.size,
+                        itemBuilder: (context, index) {
+                          return Container(
+                              child: Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 4,
+                                  horizontal: 16,
+                                ).copyWith(right: 0),
+                                child: Row(
+                                  children: <Widget>[
+                                    const CircleAvatar(
+                                      radius: 16,
+                                      backgroundImage: NetworkImage(
+                                          "https://media-exp1.licdn.com/dms/image/C4E03AQE7dJmNS-3rrQ/profile-displayphoto-shrink_100_100/0/1635786869728?e=2147483647&v=beta&t=jmByr-3c_FTM5UIYrn4Ts4Bhqpv9CxmI2znJh9df27Y"),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 8,
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              data.docs[index]["artistName"]
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  audioPlayer.setUrl(
+                                      data.docs[index]['preview'].toString());
+                                  audioPlayer.play();
+                                },
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.35,
+                                      width: double.infinity,
+                                      child: Image.network(
+                                        data.docs[index]['pictureBig']
+                                            .toString(),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                children: <Widget>[
+                                    IconButton(
+                                      icon: data.docs[index]['likes'].contains(user.uid)
+                                          ? const Icon(
+                                              Icons.favorite,
+                                              color: Colors.red,
+                                            )
+                                          : const Icon(
+                                              Icons.favorite_border,
+                                            ),
+                                      onPressed: () => FireStoreMethods().likePost(
+                                        data.docs[index]['uid'].toString(),
+                                        user.uid,
+                                        data.docs[index]['likes'],
+                                      ),
+                                    ),
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.comment_outlined,
+                                    ),
+                                    onPressed: () => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => CommentsScreen(
+                                          postId: data.docs[index]['uid'].toString(),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                      child: Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: IconButton(
+                                        icon: const Icon(Icons.bookmark_border), onPressed: () {}),
+                                  ))
+                                ],
+                              )
+                            ],
+                          ));
+                        });
+
+                    /*return ListView.builder(
                         padding: const EdgeInsets.all(0),
                         itemCount: data.size,
                         itemBuilder: (context, index) {
@@ -58,86 +170,10 @@ class HomePost extends StatelessWidget {
                           )
                               //'My name is ${data.docs[index]['name']}'
                               );
-                        });
+                        });*/
                   }))
         ],
       ),
     );
   }
 }
-/**@override
-    Widget build(BuildContext context) {
-    return MaterialApp(
-    title: 'Welcome to Flutter',
-    home: Scaffold(
-    appBar: AppBar(
-    title: const Text('Welcome to Flutter'),
-    ),
-    body: Padding(
-    padding: const EdgeInsets.all(20.0),
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    Container(
-    height: 140,
-    width: MediaQuery.of(context).size.height * 1,
-    padding: const EdgeInsets.all(20.0),
-    child: StreamBuilder<QuerySnapshot>(
-    stream: user,
-    builder: (
-    BuildContext context,
-    AsyncSnapshot<QuerySnapshot> snapshot,
-    ) {
-    if (snapshot.hasError) {
-    return const Text('Something went wrong.');
-    }
-    if (snapshot.connectionState ==
-    ConnectionState.waiting) {
-    return const Text('Loading');
-    }
-
-    final data = snapshot.requireData;
-
-    return ListView.builder(
-    padding: const EdgeInsets.all(0),
-    itemCount: data.size,
-    itemBuilder: (context, index) {
-    return SizedBox(
-    child: InkWell(
-    child: ListTile(
-    title:
-    Image.network(data.docs[index]['coverMax']),
-    ))
-    //'My name is ${data.docs[index]['name']}'
-    );
-    });
-    })),
-    ],
-    ),
-    ),
-    ),
-    );
-    }
-    }**/
-
-/**itemCount: tracks.length,
-    itemBuilder: (BuildContext context, int index) {
-    return SizedBox(
-    height: 60,
-    child: InkWell(
-    child: ListTile(
-    title: Text(tracks[index].title),
-    subtitle: Text(tracks[index].artist.name),
-    leading: InkWell(
-    child: tracks[index].album.pictureSmall ==
-    null
-    ? const Text('')
-    : Image.network(
-    tracks[index].album.pictureSmall),
-    onTap: () =>
-    playAudio(tracks[index].previewUrl))),
-    onTap: () {
-    Navigator.pushNamed(context, '/createPost',
-    arguments: tracks[index]);
-    }));
-    }))**/

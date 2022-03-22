@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'track.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:da_song/resources/firestore_methods.dart';
 
 void main() {
   runApp(const CreatePost());
@@ -23,12 +25,14 @@ class _CreatePostState extends State<CreatePost> {
   String coverMax = '';
   String preview = '';
   String tilte = '';
+  late Track arguments;
   CollectionReference posts = FirebaseFirestore.instance.collection('posts');
-
+  final TextEditingController _descriptionController = TextEditingController();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final User user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
-    
-    final arguments = ModalRoute.of(context)?.settings.arguments as Track;
+    arguments = ModalRoute.of(context)?.settings.arguments as Track;
     artist = arguments.artist.name;
     coverMax = arguments.album.pictureBig;
     preview = arguments.previewUrl;
@@ -143,6 +147,7 @@ class _CreatePostState extends State<CreatePost> {
       ),
       margin: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 40),
       child: TextField(
+        controller: _descriptionController,
         style: GoogleFonts.montserrat(
           textStyle: const TextStyle(
             fontSize: 18,
@@ -202,9 +207,12 @@ class _CreatePostState extends State<CreatePost> {
               primary: Colors.white,
               textStyle: const TextStyle(fontSize: 20, letterSpacing: 2),
             ),
-            onPressed: () {
+            onPressed: () async {
               audioPlayer.stop();
-              posts
+              print(_descriptionController.text);
+              await FireStoreMethods().uploadPost(
+                  arguments, _descriptionController.text, user);
+              /*posts
                   .add({
                     'artist': artist,
                     'coverMax': coverMax,
@@ -212,7 +220,7 @@ class _CreatePostState extends State<CreatePost> {
                     'tilte': tilte
                   })
                   .then((value) => print('Post Added'))
-                  .catchError((error) => print('Failed to add post: $error'));
+                  .catchError((error) => print('Failed to add post: $error'));*/
               Navigator.pushNamed(context, '/home');
             },
             child: const Text('SEND'),
