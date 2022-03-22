@@ -86,7 +86,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 child: TextFormField(
                                   controller: pseudoController,
                                   decoration: ThemeHelper().textInputDecoration(
-                                      "PSeudo", "Enter your pseudo"),
+                                      "Pseudo", "Enter your pseudo"),
                                   keyboardType: TextInputType.name,
                                 ),
                                 decoration:

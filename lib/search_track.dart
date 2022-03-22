@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:da_song/widget/search_widget.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
 import 'createPost.dart';
@@ -38,9 +38,8 @@ class searchTrack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const Scaffold(
-          body: Center(child: ListSearch())),
-          debugShowCheckedModeBanner: false,
+      home: const Scaffold(body: Center(child: ListSearch())),
+      debugShowCheckedModeBanner: false,
       routes: {
         "/createPost": (context) => const CreatePost(),
         '/home': (context) => HomePost(),
@@ -60,19 +59,7 @@ class ListSearchState extends State<ListSearch> {
   final TextEditingController _textController = TextEditingController();
   List<Track> tracks = List.empty();
   AudioPlayer audioPlayer = AudioPlayer();
-
-  onItemChanged(String value) async {
-    if (value.isEmpty) {
-      setState(() {
-        tracks = List.empty();
-      });
-      return;
-    }
-    List<Track> tempo = await fetchTracks(http.Client(), value);
-    setState(() {
-      tracks = tempo;
-    });
-  }
+  String query = '';
 
   playAudio(String preview) async {
     if (audioPlayer.playing) {
@@ -83,57 +70,70 @@ class ListSearchState extends State<ListSearch> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromRGBO(22, 27, 34, 1),
-        title: const Text('DaSong.', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
-        toolbarTextStyle: GoogleFonts.poppins(), titleTextStyle: GoogleFonts.poppins(),
-
-      ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: TextField(
-              controller: _textController,
-              decoration: const InputDecoration(
-                hintText: 'Search Here...',
-              ),
-              onChanged: onItemChanged,
-            ),
-          ),
-          Expanded(
+  Widget build(BuildContext context) => Scaffold(
+    resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(22, 27, 34, 1),
+          title: const Text('DaSong.',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+          toolbarTextStyle: GoogleFonts.poppins(),
+          titleTextStyle: GoogleFonts.poppins(),
+          centerTitle: true,
+        ),
+        body: Column(
+          children: <Widget>[
+            buildSearch(),
+            Expanded(
               child: ListView.builder(
-                  
-                  itemCount: tracks.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      
-                        height: 60,
-                        child: InkWell(
-                            child: ListTile(
-                                title: Text(tracks[index].title),
-                                subtitle: Text(tracks[index].artist.name),
-                                leading: InkWell(
-                                    child: tracks[index].album.pictureSmall ==
-                                            null
-                                        ? const Text('')
-                                        : Image.network(
-                                            tracks[index].album.pictureSmall),
-                                    onTap: () =>
-                                        playAudio(tracks[index].previewUrl))),
-                            onTap: () {
-                              Navigator.pushNamed(context, '/createPost',
-                                  arguments: tracks[index]);
-                            }
-                            )
-                            );
-                  }
-                  )
-                  )
-        ],
-      ),
-    );
+                itemCount: tracks.length,
+                itemBuilder: (context, index) {
+                  final track = tracks[index];
+
+                  return buildTrack(track);
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget buildSearch() => SearchWidget(
+        text: query,
+        hintText: 'Search Here...',
+        onChanged: searchTracks,
+      );
+
+  searchTracks(String value) async {
+    if (value.isEmpty) {
+      setState(() {
+        tracks = List.empty();
+      });
+      return;
+    }
+    List<Track> tempo = await fetchTracks(http.Client(), value);
+    setState(() {
+      tracks = tempo;
+      for (var track in tracks) {
+        print(track.title);
+      }
+    });
   }
+
+  Widget buildTrack(Track track) => ListTile(
+        leading: InkWell(
+            child: track.album.pictureSmall ==
+                    null
+                ? const Text('')
+                : Image.network(
+                    track.album.pictureSmall),
+            onTap: () =>
+                playAudio(track.previewUrl)),
+       
+        title: Text(track.title),
+        subtitle: Text(track.artist.name),
+        onTap: () {
+          Navigator.pushNamed(context, '/createPost',
+              arguments: track);
+        },
+      );
 }

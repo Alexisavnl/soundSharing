@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
-	<string>AlexisAvenel</string>
+	<string>com.alexisavenel.daSong</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
