@@ -55,7 +55,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           children: [
             Center(
               child: ElevatedButton(
-                child: const Text('sign out'),
+                child: const Text('dndd'),
                 onPressed: () async {
                   await _auth.signOut();
                   Navigator.of(context, rootNavigator: true).pushReplacement(

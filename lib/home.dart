@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'createPost.dart';
 import 'models/myUser.dart';
@@ -28,6 +29,14 @@ class HomePost extends StatelessWidget {
 
     AudioPlayer audioPlayer = AudioPlayer();
     return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Color.fromRGBO(22, 27, 34, 1),
+          title: const Text('DaSong.',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+          toolbarTextStyle: GoogleFonts.poppins(),
+          titleTextStyle: GoogleFonts.poppins(),
+          centerTitle: true,
+        ),
       body: Column(
         children: <Widget>[
           const Padding(padding: EdgeInsets.all(12.0)),
@@ -46,7 +55,6 @@ class HomePost extends StatelessWidget {
                     }
 
                     final data = snapshot.requireData;
-                    print(data.docs[0]['uid'].toString());
                     return ListView.builder(
                         padding: const EdgeInsets.all(0),
                         itemCount: data.size,
@@ -153,24 +161,6 @@ class HomePost extends StatelessWidget {
                             ],
                           ));
                         });
-
-                    /*return ListView.builder(
-                        padding: const EdgeInsets.all(0),
-                        itemCount: data.size,
-                        itemBuilder: (context, index) {
-                          return SizedBox(
-                              child: InkWell(
-                            child: ListTile(
-                              title:
-                                  Image.network(data.docs[index]['coverMax']),
-                            ),
-                            onTap: () async {
-                              DatabaseService(user).user;
-                            },
-                          )
-                              //'My name is ${data.docs[index]['name']}'
-                              );
-                        });*/
                   }))
         ],
       ),

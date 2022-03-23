@@ -4,6 +4,7 @@ import 'package:da_song/search_track.dart';
 import 'package:flutter/material.dart';
 import 'package:da_song/services/auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:da_song/screens/profile_page.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class _BottomNavBar extends State<BottomNavBar> {
   final List<Widget> tabs = [
     HomePost(),
     const searchTrack(),
-    Account(),
+    ProfilePage(),
   ];
 
   @override

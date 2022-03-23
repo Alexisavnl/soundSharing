@@ -3,6 +3,7 @@ import 'package:da_song/search_track.dart';
 import 'package:flutter/material.dart';
 import '../../services/auth.dart';
 import 'package:da_song/screens/login_page/login_page.dart';
+import 'package:da_song/screens/profile_page.dart';
 
 
 class Home extends StatefulWidget {
