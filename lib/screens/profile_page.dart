@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:da_song/widget/button_widget.dart';
 import 'package:da_song/widget/numbers_widget.dart';
 import 'package:da_song/widget/profile_widget.dart';
+import 'package:da_song/account.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -16,15 +17,15 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User user = FirebaseAuth.instance.currentUser!;
-
+    double height = MediaQuery.of(context).size.height - 100;
     return Builder(
       builder: (context) => Scaffold(
         body: ListView(
-          physics: BouncingScrollPhysics(),
           children: [
             ProfileWidget(
-              imagePath: user.photoURL!,
-              onClicked: () {
+              user.photoURL!,
+              false,
+              () {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => EditProfilePage()),
                 );
@@ -33,10 +34,10 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 24),
             buildName(user),
             const SizedBox(height: 24),
-            Center(child: buildUpgradeButton()),
-            const SizedBox(height: 24),
             NumbersWidget(),
             const SizedBox(height: 48),
+            const SizedBox(height: 200),
+            friendsManager(context),
           ],
         ),
       ),
@@ -47,18 +48,49 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Text(
             user.displayName!,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           const SizedBox(height: 4),
           Text(
             user.email!,
-            style: TextStyle(color: Colors.grey),
+            style: const TextStyle(color: Colors.grey),
           )
         ],
       );
 
-  Widget buildUpgradeButton() => ButtonWidget(
-        text: 'Upgrade To PRO',
-        onClicked: () {},
+  Widget friendsManager(BuildContext context) => DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: const TabBar(
+            tabs: [
+              Tab(
+                text: 'Friends',
+              ),
+              Tab(
+                text: 'Search',
+              ),
+            ],
+          ),
+          body: TabBarView(
+            children: [
+              Center(
+                child: ElevatedButton(
+                  child: const Text('dndd'),
+                  onPressed: () async {
+                    print("jdjd");
+                  },
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  child: const Text('sign out'),
+                  onPressed: () async {
+                    print("sss");
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
       );
 }

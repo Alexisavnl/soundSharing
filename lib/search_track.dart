@@ -98,6 +98,7 @@ class ListSearchState extends State<ListSearch> {
       );
 
   Widget buildSearch() => SearchWidget(
+        textEditingController: _textController,
         text: query,
         hintText: 'Search Here...',
         onChanged: searchTracks,

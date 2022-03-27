@@ -25,9 +25,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
           physics: BouncingScrollPhysics(),
           children: [
             ProfileWidget(
-              imagePath: user.photoURL!,
-              isEdit: true,
-              onClicked: () async {},
+              user.photoURL!,
+               true,
+               () async {},
             ),
             const SizedBox(height: 24),
             TextFieldWidget(

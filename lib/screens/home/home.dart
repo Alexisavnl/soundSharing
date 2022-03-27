@@ -28,7 +28,7 @@ class _Home extends State<Home> {
     final List<Widget> tabs = [
     LoginPage(),
     searchTrack(),
-    Account(),
+    account(),
   ];
 
   @override

@@ -4,12 +4,14 @@ class SearchWidget extends StatefulWidget {
   final String text;
   final ValueChanged<String> onChanged;
   final String hintText;
+  final TextEditingController textEditingController;
 
   const SearchWidget({
     Key? key,
     required this.text,
     required this.onChanged,
     required this.hintText,
+    required this.textEditingController,
   }) : super(key: key);
 
   @override
@@ -35,14 +37,15 @@ class _SearchWidgetState extends State<SearchWidget> {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: TextField(
-        controller: controller,
+        
+        controller: widget.textEditingController,
         decoration: InputDecoration(
           icon: Icon(Icons.search, color: style.color),
           suffixIcon: widget.text.isNotEmpty
               ? GestureDetector(
                   child: Icon(Icons.close, color: style.color),
                   onTap: () {
-                    controller.clear();
+                    widget.textEditingController.clear();
                     widget.onChanged('');
                     FocusScope.of(context).requestFocus(FocusNode());
                   },
@@ -54,6 +57,7 @@ class _SearchWidgetState extends State<SearchWidget> {
         ),
         style: style,
         onChanged: widget.onChanged,
+        
       ),
     );
   }

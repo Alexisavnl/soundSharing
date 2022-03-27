@@ -30,13 +30,13 @@ class HomePost extends StatelessWidget {
     AudioPlayer audioPlayer = AudioPlayer();
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Color.fromRGBO(22, 27, 34, 1),
-          title: const Text('DaSong.',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
-          toolbarTextStyle: GoogleFonts.poppins(),
-          titleTextStyle: GoogleFonts.poppins(),
-          centerTitle: true,
-        ),
+        backgroundColor: Color.fromRGBO(22, 27, 34, 1),
+        title: const Text('DaSong.',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+        toolbarTextStyle: GoogleFonts.poppins(),
+        titleTextStyle: GoogleFonts.poppins(),
+        centerTitle: true,
+      ),
       body: Column(
         children: <Widget>[
           const Padding(padding: EdgeInsets.all(12.0)),
@@ -100,6 +100,7 @@ class HomePost extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
+                                  print(user.uid);
                                   audioPlayer.setUrl(
                                       data.docs[index]['preview'].toString());
                                   audioPlayer.play();
@@ -123,8 +124,9 @@ class HomePost extends StatelessWidget {
                               ),
                               Row(
                                 children: <Widget>[
-                                    IconButton(
-                                      icon: data.docs[index]['likes'].contains(user.uid)
+                                  IconButton(
+                                      icon: data.docs[index]['likes']
+                                              .contains(user.uid)
                                           ? const Icon(
                                               Icons.favorite,
                                               color: Colors.red,
@@ -132,12 +134,13 @@ class HomePost extends StatelessWidget {
                                           : const Icon(
                                               Icons.favorite_border,
                                             ),
-                                      onPressed: () => FireStoreMethods().likePost(
-                                        data.docs[index]['uid'].toString(),
-                                        user.uid,
-                                        data.docs[index]['likes'],
-                                      ),
-                                    ),
+                                      onPressed: () {
+                                        FireStoreMethods().likePost(
+                                            data.docs[index]['uid'].toString(),
+                                            user.uid,
+                                            data.docs[index]['likes']);
+                                        _auth.signOut();
+                                      }),
                                   IconButton(
                                     icon: const Icon(
                                       Icons.comment_outlined,
@@ -145,7 +148,8 @@ class HomePost extends StatelessWidget {
                                     onPressed: () => Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => CommentsScreen(
-                                          postId: data.docs[index]['uid'].toString(),
+                                          postId: data.docs[index]['uid']
+                                              .toString(),
                                         ),
                                       ),
                                     ),
@@ -154,7 +158,8 @@ class HomePost extends StatelessWidget {
                                       child: Align(
                                     alignment: Alignment.bottomRight,
                                     child: IconButton(
-                                        icon: const Icon(Icons.bookmark_border), onPressed: () {}),
+                                        icon: const Icon(Icons.bookmark_border),
+                                        onPressed: () {}),
                                   ))
                                 ],
                               )
