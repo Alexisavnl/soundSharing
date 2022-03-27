@@ -39,39 +39,169 @@ class ListSearch extends StatefulWidget {
   ListSearchState createState() => ListSearchState();
 }
 
-class ListSearchState extends State<ListSearch> {
+class ListSearchState extends State<ListSearch>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _textController = TextEditingController();
+  late TabController _controller;
+  int _selectedIndex = 0;
   List<UserData> users = List.empty();
+  List<UserData> friends = [];
   List<String> statusUsers = List.empty();
   String query = '';
   final FirebaseAuth auth = FirebaseAuth.instance;
   final User currentUser = FirebaseAuth.instance.currentUser!;
+
   @override
-  Widget build(BuildContext context) => Scaffold(
-        resizeToAvoidBottomInset: false,
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TabController(length: 2, vsync: this, initialIndex: 0);
+    _controller.addListener(() {
+      setState(() {
+        _selectedIndex = _controller.index;
+      });
+    });
+    getFriends();
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color.fromRGBO(22, 27, 34, 1),
+          backgroundColor: const Color.fromRGBO(22, 27, 34, 1),
           title: const Text('DaSong.',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
           toolbarTextStyle: GoogleFonts.poppins(),
           titleTextStyle: GoogleFonts.poppins(),
-          centerTitle: true,
-        ),
-        body: Column(
-          children: <Widget>[
-            buildSearch(),
-            Expanded(
-              child: ListView.builder(
-                itemCount: users.length,
-                itemBuilder: (context, index) {
-                  final user = users[index];
-                  final status = statusUsers[index];
-                  return buildTrack(user, index);
-                },
+          bottom: TabBar(
+            onTap: (value) {
+              if (value == 0) {
+                setState(() {
+                  getFriends();
+                });
+              }
+              _onItemTapped(value);
+            },
+            controller: _controller,
+            tabs: const [
+              Tab(
+                text: 'Friends',
               ),
-            ),
-          ],
+              Tab(
+                text: 'Search',
+              ),
+            ],
+          ),
         ),
+        body: TabBarView(
+          controller: _controller,
+          children: <Widget>[displayFriends(), displayUser()],
+        ),
+      ),
+    );
+  }
+
+  Widget displayFriends() => Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView.builder(
+              itemCount: friends.length,
+              itemBuilder: (context, index) {
+                final user = friends[index];
+                return ListTile(
+                  leading: SizedBox(
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(user.photoUrl),
+                      radius: 16,
+                    ),
+                  ),
+                  onTap: () {},
+                  title: Text(user.username),
+                  trailing: TextButton(
+                    child: Text("Supprimer"),
+                    onPressed: () async {
+                      await FirebaseFirestore.instance
+                          .collection("users")
+                          .doc(currentUser.uid)
+                          .collection("friends")
+                          .doc(user.uid)
+                          .delete();
+                      await FirebaseFirestore.instance
+                          .collection("users")
+                          .doc(user.uid)
+                          .collection("friends")
+                          .doc(currentUser.uid)
+                          .delete();
+                      setState(() {
+                        friends.removeAt(index);
+                      });
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      );
+
+  getFriends() async {
+    List<UserData> l = [];
+    await FirebaseFirestore.instance
+        .collection('users/' + currentUser.uid + "/friends")
+        .where("status", isEqualTo: "ami")
+        .get()
+        .then((QuerySnapshot value) => {
+              value.docs.forEach((element) async {
+                await FirebaseFirestore.instance
+                    .collection("users/")
+                    .doc(element.id)
+                    .get()
+                    .then((value) => {
+                          print(value.data()!['username']),
+                          l.add(UserData(
+                              uid: value.data()!['uid'],
+                              username: value.data()!['username'],
+                              photoUrl: value.data()!['photoUrl'],
+                              friends: [])),
+                          setState(() {
+                            friends = l;
+                          })
+                        });
+              }),
+            });
+    setState(() {
+      friends = l;
+    });
+  }
+
+  Widget displayUser() => Column(
+        children: <Widget>[
+          buildSearch(),
+          Expanded(
+            child: ListView.builder(
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                final user = users[index];
+                final status = statusUsers[index];
+                return buildTrack(user, index);
+              },
+            ),
+          ),
+        ],
       );
 
   Widget buildSearch() => SearchWidget(
@@ -98,8 +228,6 @@ class ListSearchState extends State<ListSearch> {
         .get()
         .then((QuerySnapshot querySnapshot) async {
       querySnapshot.docs.forEach((doc) async {
-        print("avant");
-        print(doc["uid"]);
         await FirebaseFirestore.instance
             .collection("users")
             .doc(doc.id)
@@ -107,16 +235,14 @@ class ListSearchState extends State<ListSearch> {
             .get()
             .then(
           (value) {
-            print("vlaeur " + value.docs.length.toString());
             for (var element in value.docs) {
-              print(element.id);
               if (element.id == currentUser.uid) {
                 switch (element.data()['status']) {
                   case "demande recu":
                     tempoStatus.add("En attentes");
                     break;
                   case "demande envoye":
-                     tempoStatus.add("Accepter");
+                    tempoStatus.add("Accepter");
                     break;
                   case "ami":
                     tempoStatus.add("Supprimer");
@@ -125,19 +251,14 @@ class ListSearchState extends State<ListSearch> {
             }
           },
         );
-        //print("avant if");
         if (tempo.length == tempoStatus.length) {
           tempoStatus.add("Ajouter");
         }
-        //print("avant tempo");
         tempo.add(UserData(
             uid: doc["uid"],
             username: doc["username"],
             photoUrl: doc["photoUrl"],
             friends: tempoS));
-
-        print("tempo" + tempo.length.toString());
-        print("tempoStatus" + tempoStatus.length.toString());
         setState(() {
           users = tempo;
           statusUsers = tempoStatus;
@@ -195,7 +316,9 @@ class ListSearchState extends State<ListSearch> {
             .collection("friends")
             .doc(currentUser.uid)
             .update({"status": "ami"});
+
         setState(() {
+          getFriends();
           statusUsers[index] = "Supprimer";
         });
         break;
@@ -226,9 +349,7 @@ class ListSearchState extends State<ListSearch> {
           radius: 16,
         ),
       ),
-      onTap: () {
-        print(user.username);
-      },
+      onTap: () {},
       title: Text(user.username),
       trailing: TextButton(
           child: Text(statusUsers[index]),

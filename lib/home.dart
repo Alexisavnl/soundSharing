@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:da_song/models/userData.dart';
 import 'package:da_song/resources/firestore_methods.dart';
 import 'package:da_song/screens/comments_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,11 +23,10 @@ class HomePost extends StatelessWidget {
   final Stream<QuerySnapshot> database =
       FirebaseFirestore.instance.collection('posts').snapshots();
   final AuthService _auth = AuthService();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final User user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final User user = FirebaseAuth.instance.currentUser!;
-
     AudioPlayer audioPlayer = AudioPlayer();
     return Scaffold(
       appBar: AppBar(
@@ -100,7 +100,7 @@ class HomePost extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  print(user.uid);
+                                  test();
                                   audioPlayer.setUrl(
                                       data.docs[index]['preview'].toString());
                                   audioPlayer.play();
@@ -170,5 +170,31 @@ class HomePost extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  test() async {
+    print("djdj");
+    List<UserData> f = [];
+    return FirebaseFirestore.instance
+        .collection('users/' + user.uid + "/friends")
+        .where("status", isEqualTo: "ami")
+        .get()
+        .then((value) => {
+              value.docs.forEach((element) async {
+                await FirebaseFirestore.instance
+                    .collection("users/")
+                    .doc(element.id)
+                    .get()
+                    .then((value) => {
+                          f.add(UserData(
+                              uid: value.data()!['uid'],
+                              username: value.data()!['username'],
+                              photoUrl: value.data()!['photoUrl'],
+                              friends: [])),
+                                  print(f.length)
+                        });
+              }),
+            });
+    print(f.length);
   }
 }
