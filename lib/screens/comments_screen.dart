@@ -81,7 +81,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
           child: Row(
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage("https://media-exp1.licdn.com/dms/image/C4E03AQE7dJmNS-3rrQ/profile-displayphoto-shrink_100_100/0/1635786869728?e=2147483647&v=beta&t=jmByr-3c_FTM5UIYrn4Ts4Bhqpv9CxmI2znJh9df27Y"),
+                backgroundImage: NetworkImage(user.photoURL.toString()),
                 radius: 18,
               ),
               Expanded(
@@ -90,7 +90,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                   child: TextField(
                     controller: commentEditingController,
                     decoration: InputDecoration(
-                      hintText: 'Comment as ${user.displayName}',
+                      hintText: 'Ajouter un commentaire...',
                       border: InputBorder.none,
                     ),
                   ),
@@ -100,7 +100,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 onTap: () => postComment(
                   user.uid,
                   user.displayName!,
-                  "dhdhd",
+                  commentEditingController.text,
                 ),
                 child: Container(
                   padding:
