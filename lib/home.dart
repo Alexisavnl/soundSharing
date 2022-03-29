@@ -139,6 +139,7 @@ class HomePost extends StatelessWidget {
                                             data.docs[index]['uid'].toString(),
                                             user.uid,
                                             data.docs[index]['likes']);
+                                            
                                         _auth.signOut();
                                       }),
                                   IconButton(

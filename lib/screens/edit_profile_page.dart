@@ -18,30 +18,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) => Scaffold(
-        body: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 32),
-          physics: BouncingScrollPhysics(),
-          children: [
-            ProfileWidget(
-              user.photoURL!,
-               true,
-               () async {},
-            ),
+    return Padding(
+      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20),
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(children: [
+            ProfileWidget(user.photoURL!,false),
             const SizedBox(height: 24),
-            TextFieldWidget(
-              label: 'Full Name',
-              text: user.displayName!,
-              onChanged: (name) {},
+            SizedBox(
+              width: MediaQuery.of(context).size.width - 20,
+              child: Container(
+
+                child: TextFieldWidget(
+                  label: 'Pseudo',
+                  text: user.displayName!,
+                  onChanged: (name) {},
+                  icon: Icon(Icons.check)
+                ),
+              ),
+              
             ),
-            const SizedBox(height: 24),
-            TextFieldWidget(
-              label: 'Email',
-              text: user.email!,
-              onChanged: (email) {},
-            ),
-          ],
+          ]),
         ),
       ),
     );

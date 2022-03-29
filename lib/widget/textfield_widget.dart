@@ -1,3 +1,4 @@
+import 'package:da_song/resources/firestore_methods.dart';
 import 'package:flutter/material.dart';
 
 class TextFieldWidget extends StatefulWidget {
@@ -5,6 +6,7 @@ class TextFieldWidget extends StatefulWidget {
   final String label;
   final String text;
   final ValueChanged<String> onChanged;
+  final Icon icon;
 
   const TextFieldWidget({
     Key? key,
@@ -12,6 +14,7 @@ class TextFieldWidget extends StatefulWidget {
     required this.label,
     required this.text,
     required this.onChanged,
+    required this.icon,
   }) : super(key: key);
 
   @override
@@ -47,6 +50,16 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
           TextField(
             controller: controller,
             decoration: InputDecoration(
+              suffixIcon: IconButton(
+                  onPressed: () async {
+                    try {
+                      String res = await FireStoreMethods()
+                          .updatePseudo(controller.text);
+                    } catch (err) {
+                      print(err);
+                    }
+                  },
+                  icon: widget.icon),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

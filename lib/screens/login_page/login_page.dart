@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:da_song/BottomNavBar.dart';
 import 'package:da_song/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -136,12 +137,16 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () async {
                         UserCredential user = await _auth.signInWithGoogle();
                         if (user != null) {
-                          DatabaseReference ref = FirebaseDatabase.instance.ref('users');
                           String uid = FirebaseAuth.instance.currentUser!.uid;
-                          await ref.child(uid).update({
-                            "uid": user.user?.uid,
-                            "pseudo": user.user?.displayName,
-                          });
+                          FirebaseFirestore _firestore = FirebaseFirestore.instance;
+        await _firestore.collection("users").doc(uid).set({
+          'username': user.user?.displayName,
+          'uid': uid,
+          'photoUrl': user.user?.photoURL
+        });
+        final FirebaseAuth auth = FirebaseAuth.instance;
+                          auth.currentUser!.updatePhotoURL(user.user?.photoURL);
+        auth.currentUser!.updateDisplayName(user.user?.displayName);
                           Navigator.push(
                             context,
                             MaterialPageRoute(

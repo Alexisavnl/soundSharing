@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:da_song/screens/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -250,8 +251,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
           await _auth.registerUserWithEmailAndPassword(email, password);
       String uid = FirebaseAuth.instance.currentUser!.uid;
       if (user != null) {
-        DatabaseReference ref = FirebaseDatabase.instance.ref("users/$uid");
-        await ref.set({"pseudo": pseudo, "uid": uid});
+        FirebaseFirestore _firestore = FirebaseFirestore.instance;
+        await _firestore.collection("users").doc(uid).set({
+          'username': pseudo,
+          'uid': uid,
+          'photoUrl':
+              'https://media-exp1.licdn.com/dms/image/C4E03AQE7dJmNS-3rrQ/profile-displayphoto-shrink_200_200/0/1635786869728?e=1652918400&v=beta&t=alW2CZH53hMEdRWcXrJoRp83ZMC64qgj5aNAJsU5qk8'
+        });
+        final FirebaseAuth auth = FirebaseAuth.instance;
+        auth.currentUser!.updatePhotoURL(
+            'https://media-exp1.licdn.com/dms/image/C4E03AQE7dJmNS-3rrQ/profile-displayphoto-shrink_200_200/0/1635786869728?e=1652918400&v=beta&t=alW2CZH53hMEdRWcXrJoRp83ZMC64qgj5aNAJsU5qk8');
+        auth.currentUser!.updateDisplayName(pseudo);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Wrapper()));
       } else {

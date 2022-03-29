@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:da_song/models/userData.dart';
+import 'package:da_song/screens/profile_page.dart';
 import 'package:da_song/widget/search_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -87,6 +88,23 @@ class ListSearchState extends State<ListSearch>
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
           toolbarTextStyle: GoogleFonts.poppins(),
           titleTextStyle: GoogleFonts.poppins(),
+          actions: <Widget>[
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfilePage()),
+                      );
+              },
+              
+              child: CircleAvatar(
+                radius: 30.0,
+                backgroundImage: NetworkImage(currentUser.photoURL!),
+                backgroundColor: Colors.transparent,
+              ),
+            ),
+          ],
           bottom: TabBar(
             onTap: (value) {
               if (value == 0) {

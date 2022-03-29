@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:da_song/resources/storage_methods.dart';
+import 'package:da_song/screens/edit_profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,9 +11,9 @@ import 'package:da_song/utils/utils.dart';
 class ProfileWidget extends StatefulWidget {
   final String imagePath;
   final bool isEdit;
-  final VoidCallback onClicked;
 
-  const ProfileWidget(this.imagePath, this.isEdit, this.onClicked);
+
+   const ProfileWidget(this.imagePath, this.isEdit);
 
   @override
   _ProfileWidget createState() => _ProfileWidget();
@@ -21,13 +22,10 @@ class ProfileWidget extends StatefulWidget {
 class _ProfileWidget extends State<ProfileWidget> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final User user = FirebaseAuth.instance.currentUser!;
-
   Uint8List? _image;
 
   selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
-    print("selec");
-
     // set state because we need to display the image we selected on the circle avatar
     setState(() {
       _image = im;
@@ -36,10 +34,8 @@ class _ProfileWidget extends State<ProfileWidget> {
   }
 
   uploadImageStorage() async {
-    print("up");
     String photoUrl = await StorageMethods()
         .uploadImageToStorage('profilePics', _image!, false);
-    print(photoUrl);
     await user.updatePhotoURL(photoUrl);
   }
 
@@ -64,18 +60,27 @@ class _ProfileWidget extends State<ProfileWidget> {
   Widget buildImage() {
     return Stack(
       children: [
-        user.photoURL != null
-            ? CircleAvatar(
-                radius: 64,
-                backgroundImage: NetworkImage(user.photoURL!),
-                backgroundColor: Colors.red,
-              )
-            : const CircleAvatar(
-                radius: 64,
-                backgroundImage:
-                    NetworkImage('https://i.stack.imgur.com/l60Hf.png'),
-                backgroundColor: Colors.red,
-              ),
+          GestureDetector(
+            onTap: (() {
+Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>  EditProfilePage()),
+                      );
+            }),
+          child: user.photoURL != null
+              ? CircleAvatar(
+                  radius: 64,
+                  backgroundImage: NetworkImage(user.photoURL!),
+                  backgroundColor: Colors.red,
+                )
+              : const CircleAvatar(
+                  radius: 64,
+                  backgroundImage:
+                      NetworkImage('https://i.stack.imgur.com/l60Hf.png'),
+                  backgroundColor: Colors.red,
+                ),
+          )
       ],
     );
   }

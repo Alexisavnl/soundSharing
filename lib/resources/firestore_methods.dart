@@ -4,10 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:da_song/models/post.dart';
 import 'package:da_song/track.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   Future<String> uploadPost(Track track, String description, User user) async {
     // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
     String res = "Some error occurred";
@@ -41,7 +43,6 @@ class FireStoreMethods {
     }
     return res;
   }
-
 
   Future<String> likePost(String postId, String uid, List likes) async {
     String res = "Some error occurred";
@@ -95,4 +96,24 @@ class FireStoreMethods {
     return res;
   }
 
+  updatePseudo(String newPseudo) async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    String res = "Some error occurred";
+    try {
+      if (newPseudo.isNotEmpty) {
+        // if the likes list contains the user uid, we need to remove it
+        auth.currentUser!.updateDisplayName(newPseudo);
+        print(auth.currentUser!.photoURL);
+        _firestore
+            .collection("users")
+            .doc(auth.currentUser!.uid)
+            .update({'username': newPseudo});
+        res = 'success';
+      } else {
+        res = "Please enter text";
+      }
+    } catch (err) {
+      res = err.toString();
+    }
+  }
 }
