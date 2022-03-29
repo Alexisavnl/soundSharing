@@ -70,8 +70,9 @@ class ListSearchState extends State<ListSearch> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    resizeToAvoidBottomInset: false,
+  Widget build(BuildContext context) =>
+      Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(22, 27, 34, 1),
           title: const Text('DaSong.',
@@ -97,7 +98,8 @@ class ListSearchState extends State<ListSearch> {
         ),
       );
 
-  Widget buildSearch() => SearchWidget(
+  Widget buildSearch() =>
+      SearchWidget(
         textEditingController: _textController,
         text: query,
         hintText: 'Search Here...',
@@ -120,16 +122,26 @@ class ListSearchState extends State<ListSearch> {
     });
   }
 
-  Widget buildTrack(Track track) => ListTile(
+  Widget buildTrack(Track track) =>
+      ListTile(
         leading: InkWell(
             child: track.album.pictureSmall ==
-                    null
+                null
                 ? const Text('')
                 : Image.network(
-                    track.album.pictureSmall),
-            onTap: () =>
-                playAudio(track.previewUrl)),
-       
+                track.album.pictureSmall),
+            onTap: () {
+              audioPlayer.setUrl(
+                  track.previewUrl);
+              if(audioPlayer.playing){
+                audioPlayer.pause();
+                audioPlayer.currentIndex;
+              }else{
+                audioPlayer.play();
+              }
+            }
+        ),
+
         title: Text(track.title),
         subtitle: Text(track.artist.name),
         onTap: () {

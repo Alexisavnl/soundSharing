@@ -3,16 +3,10 @@ import 'package:da_song/models/userData.dart';
 import 'package:da_song/resources/firestore_methods.dart';
 import 'package:da_song/screens/comments_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'createPost.dart';
-import 'models/myUser.dart';
 import 'services/auth.dart';
-import 'package:da_song/services/database.dart';
 import 'package:just_audio/just_audio.dart';
 
 Future<void> main() async {
@@ -103,7 +97,13 @@ class HomePost extends StatelessWidget {
                                   test();
                                   audioPlayer.setUrl(
                                       data.docs[index]['preview'].toString());
-                                  audioPlayer.play();
+
+                                  if(audioPlayer.playing){
+                                    audioPlayer.pause();
+                                    audioPlayer.currentIndex;
+                                  }else{
+                                    audioPlayer.play();
+                                  }
                                 },
                                 child: Stack(
                                   alignment: Alignment.center,
