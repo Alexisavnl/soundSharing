@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:da_song/widget/appBarCustom.dart';
 import 'package:da_song/widget/search_widget.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -72,14 +73,7 @@ class ListSearchState extends State<ListSearch> {
   @override
   Widget build(BuildContext context) => Scaffold(
     resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          backgroundColor: Color.fromRGBO(22, 27, 34, 1),
-          title: const Text('DaSong.',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
-          toolbarTextStyle: GoogleFonts.poppins(),
-          titleTextStyle: GoogleFonts.poppins(),
-          centerTitle: true,
-        ),
+        appBar: const AppBarCustom(),
         body: Column(
           children: <Widget>[
             buildSearch(),

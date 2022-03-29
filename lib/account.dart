@@ -88,6 +88,7 @@ class ListSearchState extends State<ListSearch>
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
           toolbarTextStyle: GoogleFonts.poppins(),
           titleTextStyle: GoogleFonts.poppins(),
+          centerTitle: true,
           actions: <Widget>[
             GestureDetector(
               onTap: () {

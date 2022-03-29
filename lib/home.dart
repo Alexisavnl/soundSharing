@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:da_song/models/userData.dart';
 import 'package:da_song/resources/firestore_methods.dart';
 import 'package:da_song/screens/comments_screen.dart';
+import 'package:da_song/widget/appBarCustom.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
@@ -29,17 +30,9 @@ class HomePost extends StatelessWidget {
   Widget build(BuildContext context) {
     AudioPlayer audioPlayer = AudioPlayer();
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromRGBO(22, 27, 34, 1),
-        title: const Text('DaSong.',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
-        toolbarTextStyle: GoogleFonts.poppins(),
-        titleTextStyle: GoogleFonts.poppins(),
-        centerTitle: true,
-      ),
+      appBar: AppBarCustom(),
       body: Column(
         children: <Widget>[
-          const Padding(padding: EdgeInsets.all(12.0)),
           Expanded(
               child: StreamBuilder<QuerySnapshot>(
                   stream: database,
