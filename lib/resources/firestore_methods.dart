@@ -14,7 +14,6 @@ class FireStoreMethods {
   Future<String> uploadPost(Track track, String description, User user) async {
     // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
     String res = "Some error occurred";
-    print(track.title);
     try {
       String uid = user.uid;
       String? username = user.displayName;
@@ -104,7 +103,6 @@ class FireStoreMethods {
       if (newPseudo.isNotEmpty) {
         // if the likes list contains the user uid, we need to remove it
         auth.currentUser!.updateDisplayName(newPseudo);
-        print(auth.currentUser!.photoURL);
         await _firestore
             .collection("users")
             .doc(auth.currentUser!.uid)
