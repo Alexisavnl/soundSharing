@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:da_song/search_track.dart';
+import 'package:da_song/widget/appBarCustom.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'track.dart';
@@ -44,6 +45,7 @@ class _CreatePostState extends State<CreatePost> {
           debugShowCheckedModeBanner: false,
           title: "Create post",
           home: Scaffold(
+            appBar: const AppBarCustom(),
             body: SingleChildScrollView(
               child: Column(children: [
                 _cover(arguments.album.pictureBig),
