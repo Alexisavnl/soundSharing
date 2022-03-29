@@ -6,6 +6,7 @@ import 'package:da_song/track.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -104,10 +105,18 @@ class FireStoreMethods {
         // if the likes list contains the user uid, we need to remove it
         auth.currentUser!.updateDisplayName(newPseudo);
         print(auth.currentUser!.photoURL);
-        _firestore
+        await _firestore
             .collection("users")
             .doc(auth.currentUser!.uid)
             .update({'username': newPseudo});
+        Fluttertoast.showToast(
+          timeInSecForIosWeb: 3,
+          msg: "le nouveau pseudo a été enregistrée",
+          toastLength: Toast.LENGTH_SHORT,
+          textColor: Colors.black,
+          fontSize: 16,
+          backgroundColor: Colors.grey[200],
+        );
         res = 'success';
       } else {
         res = "Please enter text";
