@@ -33,7 +33,6 @@ class HomePost extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          const Padding(padding: EdgeInsets.all(12.0)),
           Expanded(
               child: StreamBuilder<QuerySnapshot>(
                   stream: database,
@@ -79,7 +78,7 @@ class HomePost extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              data.docs[index]["artistName"]
+                                              data.docs[index]["username"]
                                                   .toString(),
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
@@ -153,6 +152,13 @@ class HomePost extends StatelessWidget {
                                               .toString(),
                                         ),
                                       ),
+                                    ),
+                                  ),
+                                  Text(
+                                    data.docs[index]["artistName"]
+                                        .toString(),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   Expanded(
