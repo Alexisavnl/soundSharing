@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:da_song/search_track.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'track.dart';
@@ -209,19 +210,12 @@ class _CreatePostState extends State<CreatePost> {
             ),
             onPressed: () async {
               audioPlayer.stop();
-              print(_descriptionController.text);
               await FireStoreMethods().uploadPost(
                   arguments, _descriptionController.text, user);
-              /*posts
-                  .add({
-                    'artist': artist,
-                    'coverMax': coverMax,
-                    'preview': preview,
-                    'tilte': tilte
-                  })
-                  .then((value) => print('Post Added'))
-                  .catchError((error) => print('Failed to add post: $error'));*/
-              Navigator.pushNamed(context, '/home');
+              Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const searchTrack()),
+          );
             },
             child: const Text('SEND'),
           ),

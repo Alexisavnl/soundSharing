@@ -116,9 +116,6 @@ class ListSearchState extends State<ListSearch> {
     List<Track> tempo = await fetchTracks(http.Client(), value);
     setState(() {
       tracks = tempo;
-      for (var track in tracks) {
-        print(track.title);
-      }
     });
   }
 

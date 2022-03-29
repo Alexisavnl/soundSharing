@@ -174,7 +174,6 @@ class HomePost extends StatelessWidget {
   }
 
   test() async {
-    print("djdj");
     List<UserData> f = [];
     return FirebaseFirestore.instance
         .collection('users/' + user.uid + "/friends")
