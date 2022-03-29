@@ -27,7 +27,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(children: [
-            ProfileWidget(user.photoURL!,false),
+            ProfileWidget(user.photoURL!,true),
             const SizedBox(height: 24),
             SizedBox(
               width: MediaQuery.of(context).size.width - 20,

@@ -24,7 +24,7 @@ class _ProfileWidget extends State<ProfileWidget> {
   final User user = FirebaseAuth.instance.currentUser!;
   Uint8List? _image;
   final FireStoreMethods firestore = FireStoreMethods();
-  String profilePhotoUrl='';
+  String profilePhotoUrl = '';
 
   selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
@@ -67,15 +67,19 @@ class _ProfileWidget extends State<ProfileWidget> {
       children: [
         GestureDetector(
           onTap: (() {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => EditProfilePage()),
-            );
+            widget.isEdit
+                ? selectImage()
+                : Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => EditProfilePage()),
+                  );
           }),
           child: user.photoURL != null
               ? CircleAvatar(
                   radius: 64,
-                  backgroundImage: NetworkImage(profilePhotoUrl.isEmpty?widget.imagePath:profilePhotoUrl),
+                  backgroundImage: NetworkImage(profilePhotoUrl.isEmpty
+                      ? widget.imagePath
+                      : profilePhotoUrl),
                   backgroundColor: Colors.transparent,
                 )
               : const CircleAvatar(
@@ -93,7 +97,14 @@ class _ProfileWidget extends State<ProfileWidget> {
         color: Colors.white,
         all: 3,
         child: InkWell(
-          onTap: selectImage,
+          onTap: () {
+            widget.isEdit
+                ? selectImage()
+                : Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => EditProfilePage()),
+                  );
+          },
           child: buildCircle(
             color: color,
             all: 8,
