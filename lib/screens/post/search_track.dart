@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:da_song/widget/appBarCustom.dart';
 import 'package:da_song/widget/search_widget.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -9,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
+import '../home/home.dart';
 import 'createPost.dart';
 import 'track.dart';
-import 'home.dart';
 
 Future<List<Track>> fetchTracks(http.Client client, trackname) async {
   final response = await client.get(Uri.parse(

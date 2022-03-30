@@ -1,4 +1,4 @@
-import 'package:da_song/screens/edit_profile_page.dart';
+import 'package:da_song/screens/profile/edit_profile_page.dart';
 import 'package:da_song/screens/login_page/login_page.dart';
 import 'package:da_song/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';

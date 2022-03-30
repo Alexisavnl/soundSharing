@@ -1,13 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:da_song/BottomNavBar.dart';
-import 'package:da_song/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../../common/delayed_animation.dart';
 import '../../common/theme_helper.dart';
 import '../../models/myUser.dart';
-import '../home/home.dart';
 import '../register_page/register_page.dart';
 import '../../services/auth.dart';
 import '../wrapper.dart';

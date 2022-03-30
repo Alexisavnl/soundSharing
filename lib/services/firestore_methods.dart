@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:da_song/models/post.dart';
-import 'package:da_song/track.dart';
+import 'package:da_song/screens/post/track.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -17,7 +17,7 @@ class FireStoreMethods {
     try {
       String uid = user.uid;
       String? username = user.displayName;
-      String profUrl = '';
+      String profUrl = user.photoURL.toString();
       String artistName = track.artist.name;
       String pictureBig = track.album.pictureBig;
       String title = track.title;

@@ -1,19 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:da_song/screens/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../common/loading.dart';
 import 'package:da_song/common/theme_helper.dart';
 import 'package:da_song/screens/login_page/login_page.dart';
 import 'package:da_song/screens/register_page/header_widget.dart';
-import 'package:da_song/services/database.dart';
-
 import '../../common/delayed_animation.dart';
 import '../../models/myUser.dart';
 import '../../services/auth.dart';
-import '../home/home.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);

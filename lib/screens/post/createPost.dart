@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:da_song/search_track.dart';
-import 'package:da_song/widget/appBarCustom.dart';
+import 'package:da_song/screens/appBarCustom.dart';
+import 'package:da_song/screens/post/search_track.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'track.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:da_song/resources/firestore_methods.dart';
+import 'package:da_song/services/firestore_methods.dart';
 
 void main() {
   runApp(const CreatePost());

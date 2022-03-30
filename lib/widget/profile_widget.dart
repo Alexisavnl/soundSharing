@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:da_song/resources/storage_methods.dart';
-import 'package:da_song/screens/edit_profile_page.dart';
+import 'package:da_song/services/storage_methods.dart';
+import 'package:da_song/screens/profile/edit_profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

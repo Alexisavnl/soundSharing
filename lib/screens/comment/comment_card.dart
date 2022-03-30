@@ -5,20 +5,19 @@ import 'package:intl/intl.dart';
 
 class CommentCard extends StatelessWidget {
   final snap;
+
   const CommentCard({Key? key, required this.snap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       child: Row(
         children: [
           CircleAvatar(
             backgroundImage: NetworkImage(
-                FirebaseAuth.instance.currentUser!.photoURL.toString(),
+              FirebaseAuth.instance.currentUser!.photoURL.toString(),
             ),
-
           ),
           Expanded(
             child: Padding(
@@ -31,13 +30,13 @@ class CommentCard extends StatelessWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: snap.data()['name'],
-                          style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.black)
-                        ),
+                            text: snap.data()['name'],
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black)),
                         TextSpan(
-                          text: ' ${snap.data()['text']}', 
-                          style: const TextStyle(color: Colors.black)
-                        ),
+                            text: ' ${snap.data()['text']}',
+                            style: const TextStyle(color: Colors.black)),
                       ],
                     ),
                   ),
@@ -48,7 +47,9 @@ class CommentCard extends StatelessWidget {
                         snap.data()['datePublished'].toDate(),
                       ),
                       style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w400,),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   )
                 ],

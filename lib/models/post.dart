@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:da_song/track.dart';
+import 'package:da_song/screens/post/track.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Post {

@@ -1,4 +1,4 @@
-import 'package:da_song/resources/firestore_methods.dart';
+import 'package:da_song/services/firestore_methods.dart';
 import 'package:flutter/material.dart';
 
 class TextFieldWidget extends StatefulWidget {

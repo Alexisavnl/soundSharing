@@ -3,9 +3,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:da_song/resources/firestore_methods.dart';
-import 'package:provider/provider.dart';
-import 'package:da_song/widget/comment_card.dart';
+import 'package:da_song/services/firestore_methods.dart';
+import 'package:da_song/screens/comment/comment_card.dart';
 
 class CommentsScreen extends StatefulWidget {
   final postId;

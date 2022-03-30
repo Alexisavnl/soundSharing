@@ -1,10 +1,9 @@
-import 'package:da_song/account.dart';
-import 'package:da_song/home.dart';
-import 'package:da_song/search_track.dart';
+import 'package:da_song/screens/post/search_track.dart';
+import 'package:da_song/screens/profile/account.dart';
 import 'package:flutter/material.dart';
 import 'package:da_song/services/auth.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:da_song/screens/profile_page.dart';
+
+import 'home/home.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({Key? key}) : super(key: key);

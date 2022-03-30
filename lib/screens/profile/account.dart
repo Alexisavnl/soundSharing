@@ -1,19 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:da_song/models/userData.dart';
-import 'package:da_song/screens/profile_page.dart';
+import 'package:da_song/screens/profile/profile_page.dart';
 import 'package:da_song/widget/search_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
-import 'package:just_audio/just_audio.dart';
-import 'createPost.dart';
-import 'track.dart';
-import 'home.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
