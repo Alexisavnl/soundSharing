@@ -123,4 +123,32 @@ class FireStoreMethods {
       res = err.toString();
     }
   }
+
+  updatePhotoUrl(String newPhoto) async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    String res = "Some error occurred";
+    try {
+      if (newPhoto.isNotEmpty) {
+        // if the likes list contains the user uid, we need to remove it
+        await auth.currentUser!.updatePhotoURL(newPhoto);
+        await _firestore
+            .collection("users")
+            .doc(auth.currentUser!.uid)
+            .update({'photoUrl': newPhoto});
+        Fluttertoast.showToast(
+          timeInSecForIosWeb: 3,
+          msg: "Votre photo de profil a été mise à jour",
+          toastLength: Toast.LENGTH_SHORT,
+          textColor: Colors.black,
+          fontSize: 16,
+          backgroundColor: Colors.grey[200],
+        );
+        res = 'success';
+      } else {
+        res = "Please enter text";
+      }
+    } catch (err) {
+      res = err.toString();
+    }
+  }
 }

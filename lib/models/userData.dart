@@ -5,10 +5,6 @@ class UserData {
   final String username;
   final String photoUrl;
   final List<String> friends;
-  //final String lastName;
-  //final String email;
-  //final String profilePicture;
-  //final String pseudo;
 
   UserData({
     required this.uid,
