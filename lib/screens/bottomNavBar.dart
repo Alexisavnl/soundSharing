@@ -1,5 +1,6 @@
 import 'package:da_song/screens/post/search_track.dart';
 import 'package:da_song/screens/profile/account.dart';
+import 'package:da_song/utils/deezerPlayer.dart';
 import 'package:flutter/material.dart';
 import 'package:da_song/services/auth.dart';
 
@@ -20,6 +21,8 @@ class _BottomNavBar extends State<BottomNavBar> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   void _onItemTapped(int index) {
+    DeezerPlayer player = DeezerPlayer();
+          player.reset();
     setState(() {
       _selectedIndex = index;
     });

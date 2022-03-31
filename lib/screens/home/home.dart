@@ -3,6 +3,7 @@ import 'package:da_song/models/userData.dart';
 import 'package:da_song/services/firestore_methods.dart';
 import 'package:da_song/screens/comment/comments_screen.dart';
 import 'package:da_song/screens/appBarCustom.dart';
+import 'package:da_song/utils/deezerPlayer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -23,7 +24,8 @@ class HomePost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AudioPlayer audioPlayer = AudioPlayer();
+    //AudioPlayer audioPlayer = AudioPlayer();
+    DeezerPlayer audioPlayer = DeezerPlayer();
     return Scaffold(
       appBar: AppBarCustom(),
       body: Column(
@@ -89,8 +91,11 @@ class HomePost extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  test();
-                                  audioPlayer.setUrl(
+                                  print("click");
+                                  audioPlayer.play(
+                                      data.docs[index]['preview'].toString());
+
+                                  /*audioPlayer.setUrl(
                                       data.docs[index]['preview'].toString());
 
                                   if (audioPlayer.playing) {
@@ -98,7 +103,7 @@ class HomePost extends StatelessWidget {
                                     audioPlayer.currentIndex;
                                   } else {
                                     audioPlayer.play();
-                                  }
+                                  }*/
                                 },
                                 child: Stack(
                                   alignment: Alignment.center,
@@ -134,15 +139,13 @@ class HomePost extends StatelessWidget {
                                             data.docs[index]['uid'].toString(),
                                             user.uid,
                                             data.docs[index]['likes']);
-
-                                        _auth.signOut();
                                       }),
                                   IconButton(
                                       icon: const Icon(
                                         Icons.comment_outlined,
                                       ),
                                       onPressed: () {
-                                        audioPlayer.pause();
+                                        audioPlayer.reset();
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
                                             builder: (context) =>
@@ -192,30 +195,5 @@ class HomePost extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  test() async {
-    List<UserData> f = [];
-    return FirebaseFirestore.instance
-        .collection('users/' + user.uid + "/friends")
-        .where("status", isEqualTo: "ami")
-        .get()
-        .then((value) => {
-              value.docs.forEach((element) async {
-                await FirebaseFirestore.instance
-                    .collection("users/")
-                    .doc(element.id)
-                    .get()
-                    .then((value) => {
-                          f.add(UserData(
-                              uid: value.data()!['uid'],
-                              username: value.data()!['username'],
-                              photoUrl: value.data()!['photoUrl'],
-                              friends: [])),
-                          print(f.length)
-                        });
-              }),
-            });
-    print(f.length);
   }
 }

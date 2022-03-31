@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:da_song/utils/deezerPlayer.dart';
 import 'package:da_song/widget/search_widget.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -57,20 +58,11 @@ class ListSearch extends StatefulWidget {
 class ListSearchState extends State<ListSearch> {
   final TextEditingController _textController = TextEditingController();
   List<Track> tracks = List.empty();
-  AudioPlayer audioPlayer = AudioPlayer();
+  DeezerPlayer audioPlayer = DeezerPlayer();
   String query = '';
 
-  playAudio(String preview) async {
-    if (audioPlayer.playing) {
-      audioPlayer.stop();
-    }
-    await audioPlayer.setUrl(preview);
-    audioPlayer.play();
-  }
-
   @override
-  Widget build(BuildContext context) =>
-      Scaffold(
+  Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(22, 27, 34, 1),
@@ -97,8 +89,7 @@ class ListSearchState extends State<ListSearch> {
         ),
       );
 
-  Widget buildSearch() =>
-      SearchWidget(
+  Widget buildSearch() => SearchWidget(
         textEditingController: _textController,
         text: query,
         hintText: 'Search Here...',
@@ -118,31 +109,18 @@ class ListSearchState extends State<ListSearch> {
     });
   }
 
-  Widget buildTrack(Track track) =>
-      ListTile(
+  Widget buildTrack(Track track) => ListTile(
         leading: InkWell(
-            child: track.album.pictureSmall ==
-                null
+            child: track.album.pictureSmall == null
                 ? const Text('')
-                : Image.network(
-                track.album.pictureSmall),
+                : Image.network(track.album.pictureSmall),
             onTap: () {
-              audioPlayer.setUrl(
-                  track.previewUrl);
-              if(audioPlayer.playing){
-                audioPlayer.pause();
-                audioPlayer.currentIndex;
-              }else{
-                audioPlayer.play();
-              }
-            }
-        ),
-
+              audioPlayer.play(track.previewUrl);
+            }),
         title: Text(track.title),
         subtitle: Text(track.artist.name),
         onTap: () {
-          Navigator.pushNamed(context, '/createPost',
-              arguments: track);
+          Navigator.pushNamed(context, '/createPost', arguments: track);
         },
       );
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/myUser.dart';
 import '../screens/login_page/login_page.dart';
 import 'package:provider/provider.dart';
-import 'package:da_song/BottomNavBar.dart';
+import 'package:da_song/screens/bottomNavBar.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key}) : super(key: key);
