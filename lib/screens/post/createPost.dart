@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:da_song/screens/appBarCustom.dart';
 import 'package:da_song/screens/post/search_track.dart';
+import 'package:da_song/utils/deezerPlayer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'track.dart';
@@ -20,8 +21,8 @@ class CreatePost extends StatefulWidget {
 }
 
 class _CreatePostState extends State<CreatePost> {
-  AudioPlayer audioPlayer = AudioPlayer();
-  bool isPlaying = false;
+  DeezerPlayer audioPlayer = DeezerPlayer();
+  bool playing = false;
   String artist = '';
   String coverMax = '';
   String preview = '';
@@ -38,51 +39,37 @@ class _CreatePostState extends State<CreatePost> {
     coverMax = arguments.album.pictureBig;
     preview = arguments.previewUrl;
     tilte = arguments.title;
-    initPlayeur(arguments.previewUrl);
-    return WillPopScope(
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: "Create post",
-          home: Scaffold(
-            appBar: const AppBarCustom(),
-            body: SingleChildScrollView(
-              child: Column(children: [
-                _cover(arguments.album.pictureBig),
-                _soundTitle(arguments.title),
-                _albumTitle(arguments.artist.name),
-                _btnPlay(audioPlayer, arguments.previewUrl),
-                _inputComment(),
-                _send(context),
-              ]),
-            ),
-          ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "Create post",
+      home: Scaffold(
+        appBar: const AppBarCustom(),
+        body: SingleChildScrollView(
+          child: Column(children: [
+            _cover(arguments.album.pictureBig),
+            _soundTitle(arguments.title),
+            _albumTitle(arguments.artist.name),
+            _btnPlay(arguments.previewUrl),
+            _inputComment(),
+            _send(context),
+          ]),
         ),
-        onWillPop: () {
-          return _willPopCallback();
-        });
+      ),
+    );
   }
 
-  Future<bool> _willPopCallback() async {
-    await audioPlayer.stop();
-    return Future.value(true);
-  }
-
-  initPlayeur(String url) async {
-    await audioPlayer.setUrl(url);
-  }
-
-  Widget _btnPlay(AudioPlayer audioPlayer, String preview) {
+  Widget _btnPlay(String preview) {
     return Container(
       margin: const EdgeInsets.only(top: 10),
       child: GestureDetector(
         onTap: () {
           setState(() {
-            audioPlayer.playing ? audioPlayer.pause() : audioPlayer.play();
-            isPlaying = audioPlayer.playing;
+            playing = !playing;
           });
+          audioPlayer.play(preview);
         },
         child: Icon(
-            (audioPlayer.playing ? Icons.pause_circle : Icons.play_circle),
+            (playing ? Icons.pause_circle : Icons.play_circle),
             size: 50.0),
       ),
     );
@@ -210,13 +197,12 @@ class _CreatePostState extends State<CreatePost> {
               textStyle: const TextStyle(fontSize: 20, letterSpacing: 2),
             ),
             onPressed: () async {
-              audioPlayer.stop();
-              await FireStoreMethods().uploadPost(
-                  arguments, _descriptionController.text, user);
+              await FireStoreMethods()
+                  .uploadPost(arguments, _descriptionController.text, user);
               Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const searchTrack()),
-          );
+                context,
+                MaterialPageRoute(builder: (context) => const searchTrack()),
+              );
             },
             child: const Text('SEND'),
           ),
