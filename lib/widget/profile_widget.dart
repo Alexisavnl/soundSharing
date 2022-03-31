@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +26,6 @@ class _ProfileWidget extends State<ProfileWidget> {
 
   selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
-    // set state because we need to display the image we selected on the circle avatar
     setState(() {
       _image = im;
     });
@@ -46,7 +44,6 @@ class _ProfileWidget extends State<ProfileWidget> {
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme.primary;
-
     return Center(
       child: Stack(
         children: [
@@ -84,7 +81,7 @@ class _ProfileWidget extends State<ProfileWidget> {
               : const CircleAvatar(
                   radius: 64,
                   backgroundImage:
-                      NetworkImage('https://i.stack.imgur.com/l60Hf.png'),
+                      NetworkImage('https://cdn.discordapp.com/attachments/765615018996662364/959160695558111304/thesomeday123171200009.png'),
                   backgroundColor: Colors.red,
                 ),
         )

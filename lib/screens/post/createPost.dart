@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'track.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:da_song/services/firestore_methods.dart';
 
 void main() {
@@ -201,7 +200,7 @@ class _CreatePostState extends State<CreatePost> {
                   .uploadPost(arguments, _descriptionController.text, user);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const searchTrack()),
+                MaterialPageRoute(builder: (context) => const SearchTrack()),
               );
             },
             child: const Text('SEND'),

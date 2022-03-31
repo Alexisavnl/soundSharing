@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:da_song/screens/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../common/loading.dart';
 import 'package:da_song/common/theme_helper.dart';
@@ -56,7 +55,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return loading
-        ? Loading()
+        ? const Loading()
         : Scaffold(
             backgroundColor: Colors.white,
             body: SingleChildScrollView(
@@ -155,7 +154,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                         color: Colors.black,
                                       ),
                                       onPressed: () {
-                                        setState(() {});
                                         _obsureMdpVerif = !_obsureMdpVerif;
                                       },
                                     ),
@@ -252,14 +250,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
           'username': pseudo,
           'uid': uid,
           'photoUrl':
-              'https://media-exp1.licdn.com/dms/image/C4E03AQE7dJmNS-3rrQ/profile-displayphoto-shrink_200_200/0/1635786869728?e=1652918400&v=beta&t=alW2CZH53hMEdRWcXrJoRp83ZMC64qgj5aNAJsU5qk8'
+              'https://cdn.discordapp.com/attachments/765615018996662364/959160695558111304/thesomeday123171200009.png'
         });
         final FirebaseAuth auth = FirebaseAuth.instance;
-        auth.currentUser!.updatePhotoURL(
-            'https://media-exp1.licdn.com/dms/image/C4E03AQE7dJmNS-3rrQ/profile-displayphoto-shrink_200_200/0/1635786869728?e=1652918400&v=beta&t=alW2CZH53hMEdRWcXrJoRp83ZMC64qgj5aNAJsU5qk8');
+        auth.currentUser!.updatePhotoURL("https://cdn.discordapp.com/attachments/765615018996662364/959160695558111304/thesomeday123171200009.png");
         auth.currentUser!.updateDisplayName(pseudo);
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Wrapper()));
+            context, MaterialPageRoute(builder: (context) => const Wrapper()));
       } else {
         setState(() {
           loading = false;

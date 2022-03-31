@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:da_song/models/userData.dart';
 import 'package:da_song/services/firestore_methods.dart';
 import 'package:da_song/screens/comment/comments_screen.dart';
 import 'package:da_song/screens/appBarCustom.dart';
@@ -7,8 +6,6 @@ import 'package:da_song/utils/deezerPlayer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:just_audio/just_audio.dart';
 import '../../services/auth.dart';
 
 Future<void> main() async {
@@ -24,10 +21,9 @@ class HomePost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //AudioPlayer audioPlayer = AudioPlayer();
     DeezerPlayer audioPlayer = DeezerPlayer();
     return Scaffold(
-      appBar: AppBarCustom(),
+      appBar: const AppBarCustom(),
       body: Column(
         children: <Widget>[
           Expanded(
@@ -49,8 +45,7 @@ class HomePost extends StatelessWidget {
                         padding: const EdgeInsets.all(0),
                         itemCount: data.size,
                         itemBuilder: (context, index) {
-                          return Container(
-                              child: Column(
+                          return Column(
                             children: [
                               Container(
                                 padding: const EdgeInsets.symmetric(
@@ -91,19 +86,8 @@ class HomePost extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  print("click");
                                   audioPlayer.play(
                                       data.docs[index]['preview'].toString());
-
-                                  /*audioPlayer.setUrl(
-                                      data.docs[index]['preview'].toString());
-
-                                  if (audioPlayer.playing) {
-                                    audioPlayer.pause();
-                                    audioPlayer.currentIndex;
-                                  } else {
-                                    audioPlayer.play();
-                                  }*/
                                 },
                                 child: Stack(
                                   alignment: Alignment.center,
@@ -189,7 +173,7 @@ class HomePost extends StatelessWidget {
                                 ],
                               )
                             ],
-                          ));
+                          );
                         });
                   }))
         ],

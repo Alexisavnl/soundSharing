@@ -30,8 +30,8 @@ class _BottomNavBar extends State<BottomNavBar> {
 
   final List<Widget> tabs = [
     HomePost(),
-    const searchTrack(),
-    account(),
+    const SearchTrack(),
+    const Account(),
   ];
 
   @override

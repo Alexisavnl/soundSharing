@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:da_song/widget/profile_widget.dart';
@@ -7,6 +5,8 @@ import 'package:da_song/widget/textfield_widget.dart';
 
 
 class EditProfilePage extends StatefulWidget {
+  const EditProfilePage({Key? key}) : super(key: key);
+
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
 }
@@ -17,7 +17,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
   @override
@@ -31,15 +30,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
             const SizedBox(height: 24),
             SizedBox(
               width: MediaQuery.of(context).size.width - 20,
-              child: Container(
-                child: TextFieldWidget(
-                  label: 'Pseudo',
-                  text: user.displayName!,
-                  onChanged: (name) {},
-                  icon: Icon(Icons.check)
-                ),
-              ),
-              
+              child: TextFieldWidget(
+                label: 'Pseudo',
+                text: user.displayName!,
+                onChanged: (name) {},
+                icon: const Icon(Icons.check)
+              ),           
             ),
           ]),
         ),

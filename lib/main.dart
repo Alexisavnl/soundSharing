@@ -1,12 +1,9 @@
 import 'package:da_song/utils/deezerPlayer.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/services/auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'common/splash_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,9 +60,7 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
     );
   }
 
-  @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     throw UnimplementedError();
   }
 }

@@ -5,7 +5,6 @@ import 'package:da_song/screens/profile/profile_page.dart';
 import 'package:da_song/widget/search_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -13,11 +12,11 @@ import 'package:google_fonts/google_fonts.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const account());
+  runApp(const Account());
 }
 
-class account extends StatelessWidget {
-  const account({Key? key}) : super(key: key);
+class Account extends StatelessWidget {
+  const Account({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +145,7 @@ class ListSearchState extends State<ListSearch>
                   onTap: () {},
                   title: Text(user.username),
                   trailing: TextButton(
-                    child: Text("Supprimer"),
+                    child: const Text("Supprimer"),
                     onPressed: () async {
                       await FirebaseFirestore.instance
                           .collection("users")
@@ -185,7 +184,6 @@ class ListSearchState extends State<ListSearch>
                     .doc(element.id)
                     .get()
                     .then((value) => {
-                          print(value.data()!['username']),
                           l.add(UserData(
                               uid: value.data()!['uid'],
                               username: value.data()!['username'],

@@ -135,14 +135,14 @@ class _LoginPageState extends State<LoginPage> {
                         if (user != null) {
                           String uid = FirebaseAuth.instance.currentUser!.uid;
                           FirebaseFirestore _firestore = FirebaseFirestore.instance;
-        await _firestore.collection("users").doc(uid).set({
-          'username': user.user?.displayName,
-          'uid': uid,
-          'photoUrl': user.user?.photoURL
-        });
-        final FirebaseAuth auth = FirebaseAuth.instance;
+                          await _firestore.collection("users").doc(uid).set({
+                            'username': user.user?.displayName,
+                            'uid': uid,
+                            'photoUrl': user.user?.photoURL
+                          });
+                          final FirebaseAuth auth = FirebaseAuth.instance;
                           auth.currentUser!.updatePhotoURL(user.user?.photoURL);
-        auth.currentUser!.updateDisplayName(user.user?.displayName);
+                          auth.currentUser!.updateDisplayName(user.user?.displayName);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -204,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
       MyUser? user = await _auth.signInWithEmailAndPassword(email, password);
       if (user != null) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Wrapper()));
+            context, MaterialPageRoute(builder: (context) => const Wrapper()));
       } else {
         setState(() {
           loading = false;

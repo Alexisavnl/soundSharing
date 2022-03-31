@@ -5,7 +5,7 @@ class DelayedAnimation extends StatefulWidget {
   final Widget child;
   final int delay;
 
-  const DelayedAnimation({required this.delay, required this.child});
+   const DelayedAnimation({Key? key, required this.delay, required this.child}) : super(key: key);
 
   @override
   _DelayedAnimationState createState() => _DelayedAnimationState();
@@ -32,6 +32,11 @@ class _DelayedAnimationState extends State<DelayedAnimation>
     Timer(Duration(milliseconds: widget.delay), () {
       _controller.forward();
     });
+  }
+   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override

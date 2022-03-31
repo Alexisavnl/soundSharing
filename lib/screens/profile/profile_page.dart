@@ -1,13 +1,12 @@
-import 'package:da_song/screens/profile/edit_profile_page.dart';
 import 'package:da_song/screens/login_page/login_page.dart';
 import 'package:da_song/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:da_song/widget/button_widget.dart';
 import 'package:da_song/widget/profile_widget.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -51,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
       );
 
   Widget signOut() => ElevatedButton(
-        style: ElevatedButton.styleFrom(minimumSize: Size(50, 40)),
+        style: ElevatedButton.styleFrom(minimumSize: const Size(50, 40)),
         child: const Text('sign out'),
         onPressed: () async {
           await _auth.signOut();

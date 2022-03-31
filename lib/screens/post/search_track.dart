@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:da_song/screens/appBarCustom.dart';
 import 'package:da_song/utils/deezerPlayer.dart';
 import 'package:da_song/widget/search_widget.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:just_audio/just_audio.dart';
 import '../home/home.dart';
 import 'createPost.dart';
 import 'track.dart';
@@ -17,7 +16,6 @@ Future<List<Track>> fetchTracks(http.Client client, trackname) async {
       'https://api.deezer.com/search/track?q=' +
           trackname +
           '&index=0&limit=100'));
-  // Use the compute function to run parsePhotos in a separate isolate.
   return compute(parseTracks, response.body);
 }
 
@@ -29,11 +27,11 @@ List<Track> parseTracks(String responseBody) {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const searchTrack());
+  runApp(const SearchTrack());
 }
 
-class searchTrack extends StatelessWidget {
-  const searchTrack({Key? key}) : super(key: key);
+class SearchTrack extends StatelessWidget {
+  const SearchTrack({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +62,7 @@ class ListSearchState extends State<ListSearch> {
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          backgroundColor: Color.fromRGBO(22, 27, 34, 1),
-          title: const Text('DaSong.',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
-          toolbarTextStyle: GoogleFonts.poppins(),
-          titleTextStyle: GoogleFonts.poppins(),
-          centerTitle: true,
-        ),
+        appBar: const AppBarCustom(),
         body: Column(
           children: <Widget>[
             buildSearch(),
@@ -80,7 +71,6 @@ class ListSearchState extends State<ListSearch> {
                 itemCount: tracks.length,
                 itemBuilder: (context, index) {
                   final track = tracks[index];
-
                   return buildTrack(track);
                 },
               ),

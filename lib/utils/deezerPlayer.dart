@@ -12,7 +12,6 @@ class DeezerPlayer {
 
   DeezerPlayer._internal();
   Future<void> play(String preview) async {
-    print("inside player " + preview + " " + lastPreview);
     if (audioPlayer.playing && lastPreview.compareTo(preview) == 0) {
       audioPlayer.pause();
       return;

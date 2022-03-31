@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +40,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
     final User user = FirebaseAuth.instance.currentUser!;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(22, 27, 34, 1),
+        backgroundColor: const Color.fromRGBO(22, 27, 34, 1),
         title: const Text(
           'Comments',
         ),
@@ -70,7 +68,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
           );
         },
       ),
-      // text input
       bottomNavigationBar: SafeArea(
         child: Container(
           height: kToolbarHeight,
@@ -88,7 +85,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                   padding: const EdgeInsets.only(left: 16, right: 8),
                   child: TextField(
                     controller: commentEditingController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Ajouter un commentaire...',
                       border: InputBorder.none,
                     ),
