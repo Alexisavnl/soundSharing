@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
+//AppBar simple avec écrit DaSong.
 class AppBarCustom extends StatelessWidget implements PreferredSizeWidget{
   const AppBarCustom({Key? key}) : super(key: key);
-
 
  @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);

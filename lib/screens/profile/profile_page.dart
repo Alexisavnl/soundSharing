@@ -4,6 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:da_song/widget/profile_widget.dart';
 
+//ProfilePage permet de visualiser son profile
+//Lorqu'on clique sur notre photo on est rediriger sur edit_profile
+//Un bouton sign out permet de se déconnecter
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 

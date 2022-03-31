@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Modèle d'une zone de saisie
 class SearchWidget extends StatefulWidget {
   final String text;
   final ValueChanged<String> onChanged;

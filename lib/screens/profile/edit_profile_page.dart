@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:da_song/widget/profile_widget.dart';
 import 'package:da_song/widget/textfield_widget.dart';
 
-
+//Page permettant de changer de photo de profil et/ou de pseudo
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
 

@@ -8,7 +8,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
+//La page account possède une barre d'onglets
+//Le premier onglet permet de visualiser ses amis
+//Le deuxième onglet permet de faire une recherche d'amis et de pouvoir les ajouter directement
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -48,7 +50,6 @@ class ListSearchState extends State<ListSearch>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _controller.dispose();
   }
@@ -89,7 +90,7 @@ class ListSearchState extends State<ListSearch>
                 Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ProfilePage()),
+                            builder: (context) => const ProfilePage()),
                       );
               },
               
@@ -128,6 +129,7 @@ class ListSearchState extends State<ListSearch>
     );
   }
 
+  //DisplayFriends affiche la liste de tout ses amis
   Widget displayFriends() => Column(
         children: <Widget>[
           Expanded(
@@ -171,6 +173,7 @@ class ListSearchState extends State<ListSearch>
         ],
       );
 
+  //Méthode getFriends intérroge firestore pour récupérer tous ses amis et les rangent dans la liste friends
   getFriends() async {
     List<UserData> l = [];
     await FirebaseFirestore.instance
@@ -209,7 +212,7 @@ class ListSearchState extends State<ListSearch>
               itemBuilder: (context, index) {
                 final user = users[index];
                 final status = statusUsers[index];
-                return buildTrack(user, index);
+                return displayItemUser(user, index);
               },
             ),
           ),
@@ -223,6 +226,7 @@ class ListSearchState extends State<ListSearch>
         onChanged: searchUsers,
       );
 
+  //SearchUsers récupèrents tout les utilisateurs dans firestore dont le pseudo ressemble à la recherche taper
   searchUsers(String value) async {
     if (value.isEmpty) {
       setState(() {
@@ -279,6 +283,12 @@ class ListSearchState extends State<ListSearch>
     });
   }
 
+  //changeListStatus est appeler à chaque fois que l'utilisateur tape sur le bouton tout à droite d'un pseudo d'utilisateur
+  //changeListStatus permet de mettre à jours le status de la relation entre deux utilisateurs dans la base de donnée
+  //Bouton Supprimer : permet de supprimer un ami
+  //Bouton Ajouter : permet d'envoyer une demande d'ami
+  //Bouton Accepter : permet d'accepter une demande d'ami
+  //Bouton En attentes : permet de supprimer la demande envoyer
   changeListStatus(int index) async {
     switch (statusUsers[index]) {
       case "Supprimer":
@@ -354,7 +364,7 @@ class ListSearchState extends State<ListSearch>
     }
   }
 
-  Widget buildTrack(UserData user, int index) => ListTile(
+  Widget displayItemUser(UserData user, int index) => ListTile(
       leading: SizedBox(
         child: CircleAvatar(
           backgroundImage: NetworkImage(user.photoUrl),

@@ -24,6 +24,8 @@ class _ProfileWidget extends State<ProfileWidget> {
   final FireStoreMethods firestore = FireStoreMethods();
   String profilePhotoUrl = '';
 
+  //Méthode qui fait appelle  pickImage pour récupérer une photo de la galerie
+  //puis appel uploadImageStorage
   selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
@@ -32,6 +34,8 @@ class _ProfileWidget extends State<ProfileWidget> {
     uploadImageStorage();
   }
 
+  //uploadImageStorage fait appel à uploadImageToStorage pour envoyer la photo sur le serveur firebase
+  //puis appel updatePhotoUrl pour modifier le lien de la nouvelle image de profile
   uploadImageStorage() async {
     String photoUrl = await StorageMethods()
         .uploadImageToStorage('profilePics', _image!, false);

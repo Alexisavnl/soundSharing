@@ -6,6 +6,7 @@ import 'package:da_song/services/auth.dart';
 
 import 'home/home.dart';
 
+//Barre de navigation, permet la gestion entre nos différentes pages, home, post et profile.
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({Key? key}) : super(key: key);
 
@@ -20,6 +21,7 @@ class _BottomNavBar extends State<BottomNavBar> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
+  //permet de nous tranferer entre les trois pages
   void _onItemTapped(int index) {
     DeezerPlayer player = DeezerPlayer();
           player.reset();
@@ -28,6 +30,7 @@ class _BottomNavBar extends State<BottomNavBar> {
     });
   }
 
+  //List de nos trois pages
   final List<Widget> tabs = [
     HomePost(),
     const SearchTrack(),

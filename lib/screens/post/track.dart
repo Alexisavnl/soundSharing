@@ -1,3 +1,5 @@
+//Objet Artist
+//Un artiste possède un identifiant et un nom
 class Artist {
   final int artistId;
   final String name;
@@ -7,6 +9,7 @@ class Artist {
     required this.name,
   });
 
+  // permet de transformer le JSON en String
   factory Artist.fromJson(Map<String, dynamic> json) {
     return Artist(
       artistId: json['id'] as int,
@@ -15,6 +18,8 @@ class Artist {
   }
 }
 
+//Objet Album
+//Un Album possède une pochette de taille petite, une moyenne et une grande
 class Album {
   final String pictureSmall;
   final String pictureMedium;
@@ -25,6 +30,7 @@ class Album {
     required this.pictureMedium,
     required this.pictureBig,
   });
+  // permet de transformer le JSON en String
   factory Album.fromJson(Map<String, dynamic> json) {
     return Album(
       pictureSmall: json['cover_small'] as String,
@@ -34,6 +40,8 @@ class Album {
   }
 }
 
+//Objet track
+//Un track possède un identifiant, un titre, une preview mp3, un Artiste et un Album.
 class Track {
   final int trackId;
   final String title;
@@ -49,6 +57,7 @@ class Track {
     required this.album,
   });
 
+  // permet de transformer le JSON en String
   factory Track.fromJson(Map<String, dynamic> json) {
     return Track(
       trackId: json['id'] as int,

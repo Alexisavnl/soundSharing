@@ -8,6 +8,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../services/auth.dart';
 
+// La classe homePost permet l'affichage des postes de ses amis
+// Elle récupère toutes les données nécessaire dans firestore de firebase
+// Elle fait aussi appèle au fichier deezerPlayer pour lancer les musiques
 Future<void> main() async {
   runApp(HomePost());
 }

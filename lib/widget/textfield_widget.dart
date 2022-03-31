@@ -1,6 +1,7 @@
 import 'package:da_song/services/firestore_methods.dart';
 import 'package:flutter/material.dart';
 
+//Modèle de grande zone de saisie de texte
 class TextFieldWidget extends StatefulWidget {
   final int maxLines;
   final String label;

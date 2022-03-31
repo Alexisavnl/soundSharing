@@ -10,6 +10,8 @@ import '../../common/delayed_animation.dart';
 import '../../models/myUser.dart';
 import '../../services/auth.dart';
 
+//Page pour se crée un compte : Il faut renseigner un e-mail, un mot de passe, un pseudo
+//Si le mot de passe et trop court l'enregistrement sera refuser 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
 

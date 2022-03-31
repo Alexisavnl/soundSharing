@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+//classe regroupent plusieurs thème.
 class ThemeHelper {
+
   InputDecoration textInputDecoration(
       [String lableText = "", String hintText = "", IconButton? suffixIcon]) {
     return InputDecoration(
@@ -78,6 +80,7 @@ class ThemeHelper {
     );
   }
 
+  //affichage d'un message en bas de l'écran
   AlertDialog alartDialog(String title, String content, BuildContext context) {
     return AlertDialog(
       title: Text(title),

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+//DatabaseService récupérer des informations sur l'utilisateur en cours
 class DatabaseService {
   final String uid;
   late final FirebaseAuth auth;
@@ -24,3 +25,4 @@ class DatabaseService {
   void nameOfFirends(List<String> list) async {
     print(user?.displayName);
   }
+}

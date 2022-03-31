@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import '/services/auth.dart';
 import 'common/splash_screen.dart';
 
+//Premier fichier lancer par l'application
+//Redirige sur le splashscreen
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp().whenComplete(() {

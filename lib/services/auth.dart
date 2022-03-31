@@ -7,7 +7,7 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  //create user object on FirebaseUser
+  //créer un objet utilisateur sur FirebaseUser
   MyUser? userFromFirebase(User? user) {
     return user != null ? MyUser(uid: user.uid) : null;
   }
@@ -17,7 +17,7 @@ class AuthService {
     return _auth.authStateChanges().map(userFromFirebase);
   }
 
-//sign in with email & password
+//Connexion par mail et mot de passe
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
@@ -35,7 +35,7 @@ class AuthService {
     }
   }
 
-//register with email & password
+//Inscription par mail et mot de passe
   Future registerUserWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential userCredential = await _auth
@@ -55,20 +55,17 @@ class AuthService {
     }
   }
 
-//sign in with google
+//Connexion par google
   Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
+
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-    // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
         await googleUser!.authentication;
 
-    // Create a new credential
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
-    // Once signed in, return the UserCredential
     return await _auth.signInWithCredential(credential);
   }
 
@@ -76,7 +73,7 @@ class AuthService {
     return _googleSignIn.currentUser?.displayName;
   }
 
-//sign out
+//Déconnection
   Future signOut() async {
     await _googleSignIn.signOut();
     await _auth.signOut();

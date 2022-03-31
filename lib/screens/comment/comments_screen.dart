@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:da_song/services/firestore_methods.dart';
 import 'package:da_song/screens/comment/comment_card.dart';
 
+
+//Cette classe s'occupe de la réception et de l'affichage de l'espace commentaire d'un poste
+//Elle fait appelle au modèle comment_card pour l'affichage
 class CommentsScreen extends StatefulWidget {
   final postId;
   const CommentsScreen({Key? key, required this.postId}) : super(key: key);

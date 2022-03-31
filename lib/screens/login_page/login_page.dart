@@ -8,6 +8,7 @@ import '../register_page/register_page.dart';
 import '../../services/auth.dart';
 import '../wrapper.dart';
 
+//Simple page de connexion qui prend en charge la connexion par mail et Google
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 

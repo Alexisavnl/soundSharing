@@ -10,6 +10,7 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
+//écran de démarrage (GIF de la cassete)
 class _SplashScreenState extends State<SplashScreen> {
   bool _isVisible = false;
 

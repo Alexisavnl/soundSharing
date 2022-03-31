@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  //UploadPost permet d'envoyer toutes les données d'un poste sur firestore
   Future<String> uploadPost(Track track, String description, User user) async {
     String res = "Some error occurred";
     try {
@@ -40,6 +41,7 @@ class FireStoreMethods {
     return res;
   }
 
+  //likePost permet d'envoyer ou suprimer un like sur firestore
   Future<String> likePost(String postId, String uid, List likes) async {
     String res = "Some error occurred";
     try {
@@ -59,7 +61,7 @@ class FireStoreMethods {
     return res;
   }
 
-
+  //postComment enregistre un commentaire dans firestore
   Future<String> postComment(String postId, String text, String uid,
       String name, String profilePic) async {
     String res = "Some error occurred";
@@ -88,7 +90,7 @@ class FireStoreMethods {
     }
     return res;
   }
-
+  //change le pseudo d'un utilisateur dans authentification et dans firestore
   updatePseudo(String newPseudo) async {
     final FirebaseAuth auth = FirebaseAuth.instance;
     String res = "Some error occurred";
@@ -115,7 +117,7 @@ class FireStoreMethods {
       res = err.toString();
     }
   }
-
+  //change la photo de profile d'un utilisateur dans authentification et dans firestore
   updatePhotoUrl(String newPhoto) async {
     final FirebaseAuth auth = FirebaseAuth.instance;
     String res = "Some error occurred";

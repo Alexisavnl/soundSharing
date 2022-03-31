@@ -8,6 +8,10 @@ import 'track.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:da_song/services/firestore_methods.dart';
 
+//Page de création de Post. 
+//Dans cette page on retrouve la cover de la musique choisi ainsi que le nom de la musique 
+//et de l'artiste. Un bouton play/pause pour jouer la musique grâce au fichier DeezerPlayer.
+//Et pour finir un bouton send pour envoyé les données du poste sur firestore de firebase.
 void main() {
   runApp(const CreatePost());
 }

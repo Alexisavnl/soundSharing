@@ -11,6 +11,7 @@ class DelayedAnimation extends StatefulWidget {
   _DelayedAnimationState createState() => _DelayedAnimationState();
 }
 
+//Cette classe permet d'afficher un rond de chargement
 class _DelayedAnimationState extends State<DelayedAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;

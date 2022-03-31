@@ -11,6 +11,11 @@ import '../home/home.dart';
 import 'createPost.dart';
 import 'track.dart';
 
+//Search Track permet d'aller chercher les musiques recherchées par un utilisateur dans la base de 
+//données deezer grâce l'API. 
+
+//fetchTracks lance une requête HTPP à l'API deezer et réçoit réponse sous forme de JSON
+//et le transmet à parseTracks
 Future<List<Track>> fetchTracks(http.Client client, trackname) async {
   final response = await client.get(Uri.parse(
       'https://api.deezer.com/search/track?q=' +
@@ -19,6 +24,7 @@ Future<List<Track>> fetchTracks(http.Client client, trackname) async {
   return compute(parseTracks, response.body);
 }
 
+//parseTracks est une fonction qui permet de parser du JSON reçu en paramètres en objet Track et retour la liste des objets
 List<Track> parseTracks(String responseBody) {
   final parsed = jsonDecode(responseBody)['data'].cast<Map<String, dynamic>>();
   return parsed.map<Track>((json) => Track.fromJson(json)).toList();
@@ -46,6 +52,7 @@ class SearchTrack extends StatelessWidget {
   }
 }
 
+//Affichage de la liste des morceaux correspondant à la recherche de l'utilisateur
 class ListSearch extends StatefulWidget {
   const ListSearch({Key? key}) : super(key: key);
 
