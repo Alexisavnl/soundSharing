@@ -12,8 +12,6 @@ import 'package:google_fonts/google_fonts.dart';
 //Le premier onglet permet de visualiser ses amis
 //Le deuxième onglet permet de faire une recherche d'amis et de pouvoir les ajouter directement
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   runApp(const Account());
 }
 
@@ -88,12 +86,10 @@ class ListSearchState extends State<ListSearch>
             GestureDetector(
               onTap: () {
                 Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ProfilePage()),
-                      );
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProfilePage()),
+                );
               },
-              
               child: CircleAvatar(
                 radius: 30.0,
                 backgroundImage: NetworkImage(currentUser.photoURL!),
@@ -365,17 +361,18 @@ class ListSearchState extends State<ListSearch>
   }
 
   Widget displayItemUser(UserData user, int index) => ListTile(
-      leading: SizedBox(
-        child: CircleAvatar(
-          backgroundImage: NetworkImage(user.photoUrl),
-          radius: 16,
+        leading: SizedBox(
+          child: CircleAvatar(
+            backgroundImage: NetworkImage(user.photoUrl),
+            radius: 16,
+          ),
         ),
-      ),
-      onTap: () {},
-      title: Text(user.username),
-      trailing: TextButton(
-          child: Text(statusUsers[index]),
-          onPressed: () {
-            changeListStatus(index);
-          }));
+        onTap: () {},
+        title: Text(user.username),
+        trailing: TextButton(
+            child: Text(statusUsers[index]),
+            onPressed: () {
+              changeListStatus(index);
+            }),
+      );
 }

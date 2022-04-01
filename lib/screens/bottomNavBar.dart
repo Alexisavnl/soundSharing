@@ -33,7 +33,7 @@ class _BottomNavBar extends State<BottomNavBar> {
   //List de nos trois pages
   final List<Widget> tabs = [
     HomePost(),
-    const SearchTrack(),
+    SearchTrack(),
     const Account(),
   ];
 

@@ -90,6 +90,23 @@ class FireStoreMethods {
     }
     return res;
   }
+
+
+  Future<bool> postExist() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    bool exist = false;
+    try {
+      await _firestore
+          .collection('posts').doc(auth.currentUser?.uid.toString()).get().then((value) {
+            exist = value.exists;
+
+      });
+      print(exist);
+      return exist;
+    } catch (err) {
+      return false;
+    }
+  }
   //change le pseudo d'un utilisateur dans authentification et dans firestore
   updatePseudo(String newPseudo) async {
     final FirebaseAuth auth = FirebaseAuth.instance;

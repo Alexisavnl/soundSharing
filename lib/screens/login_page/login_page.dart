@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
               child: SizedBox(
                 height: 300,
                 child:
-                    Image.asset('images/android.gif', height: 200, width: 200),
+                    Image.asset('images/logo.gif', height: 200, width: 200),
               ),
             ),
             DelayedAnimation(

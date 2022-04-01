@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:da_song/screens/appBarCustom.dart';
+import 'package:da_song/services/firestore_methods.dart';
 import 'package:da_song/utils/deezerPlayer.dart';
 import 'package:da_song/widget/search_widget.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,8 +12,8 @@ import '../home/home.dart';
 import 'createPost.dart';
 import 'track.dart';
 
-//Search Track permet d'aller chercher les musiques recherchées par un utilisateur dans la base de 
-//données deezer grâce l'API. 
+//Search Track permet d'aller chercher les musiques recherchées par un utilisateur dans la base de
+//données deezer grâce l'API.
 
 //fetchTracks lance une requête HTPP à l'API deezer et réçoit réponse sous forme de JSON
 //et le transmet à parseTracks
@@ -31,9 +32,7 @@ List<Track> parseTracks(String responseBody) {
 }
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(const SearchTrack());
+  runApp(SearchTrack());
 }
 
 class SearchTrack extends StatelessWidget {
@@ -65,26 +64,52 @@ class ListSearchState extends State<ListSearch> {
   List<Track> tracks = List.empty();
   DeezerPlayer audioPlayer = DeezerPlayer();
   String query = '';
+  FireStoreMethods fireStoreMethods = FireStoreMethods();
+
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context){
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: const AppBarCustom(),
-        body: Column(
-          children: <Widget>[
-            buildSearch(),
-            Expanded(
-              child: ListView.builder(
-                itemCount: tracks.length,
-                itemBuilder: (context, index) {
-                  final track = tracks[index];
-                  return buildTrack(track);
-                },
-              ),
+        body: FutureBuilder(
+            future: fireStoreMethods.postExist(),
+            builder: (BuildContext context, AsyncSnapshot<bool> sharedPreference) {
+              print(sharedPreference.data);
+              if (sharedPreference.data==true) {
+                return const Center(child:Text("Vous avez déjà créé un post aujourd'hui"));
+              }
+              else {
+                return displayList();
+              }
+            }),
+      ),
+    );
+  }
+
+
+
+  Widget displayList(){
+   return  Column(
+        children: <Widget>[
+          buildSearch(),
+          Expanded(
+            child: ListView.builder(
+              itemCount: tracks.length,
+              itemBuilder: (context, index) {
+                final track = tracks[index];
+                return buildTrack(track);
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       );
+
+  }
+
+
 
   Widget buildSearch() => SearchWidget(
         textEditingController: _textController,

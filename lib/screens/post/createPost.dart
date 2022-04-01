@@ -204,7 +204,7 @@ class _CreatePostState extends State<CreatePost> {
                   .uploadPost(arguments, _descriptionController.text, user);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const SearchTrack()),
+                MaterialPageRoute(builder: (context) => SearchTrack()),
               );
             },
             child: const Text('SEND'),

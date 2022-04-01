@@ -52,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
             height: 200,
             width: 200,
             child: Center(
-              child: Image.asset('images/android.gif',),
+              child: Image.asset('images/logo.gif',),
             ),
           ),
         ),
