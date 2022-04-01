@@ -21,7 +21,7 @@ class HomePost extends StatelessWidget {
   final AuthService _auth = AuthService();
   final FirebaseAuth auth = FirebaseAuth.instance;
   final User user = FirebaseAuth.instance.currentUser!;
-
+  List<String> friendsUid = [];
   @override
   Widget build(BuildContext context) {
     DeezerPlayer audioPlayer = DeezerPlayer();
@@ -30,153 +30,186 @@ class HomePost extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                  stream: database,
-                  builder: (
-                    BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot,
-                  ) {
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(user.uid)
+                      .collection("friends")
+                      .where("status", isEqualTo: "ami")
+                      .snapshots(),
+                  builder: (context,
+                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                          snapshot) {
                     if (snapshot.hasError) {
                       return const Text('Something went wrong.');
                     }
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Text('Loading');
                     }
+                    friendsUid = [];
+                    for (int i = 0; i < snapshot.data!.size; i++) {
+                      friendsUid.add(snapshot.data!.docs[i].id);
+                    }
+                    friendsUid.add(user.uid);
+                    return StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('posts')
+                            .where('uid', whereIn: friendsUid)
+                            .snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                                snapPost) {
+                          if (snapPost.hasError) {
+                            return const Text('Something went wrong.');
+                          }
+                          if (snapPost.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Text('Loading');
+                          }
 
-                    final data = snapshot.requireData;
-                    return ListView.builder(
-                        padding: const EdgeInsets.all(0),
-                        itemCount: data.size,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 4,
-                                  horizontal: 16,
-                                ).copyWith(right: 0),
-                                child: Row(
-                                  children: <Widget>[
-                                    CircleAvatar(
-                                      radius: 16,
-                                      backgroundImage: NetworkImage(
-                                        data.docs[index]["profUrl"].toString(),
+                          final data = snapPost.requireData;
+                          return ListView.builder(
+                              padding: const EdgeInsets.all(0),
+                              itemCount: data.size,
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 4,
+                                        horizontal: 16,
+                                      ).copyWith(right: 0),
+                                      child: Row(
+                                        children: <Widget>[
+                                          CircleAvatar(
+                                            radius: 16,
+                                            backgroundImage: NetworkImage(
+                                              data.docs[index]["profUrl"]
+                                                  .toString(),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 8,
+                                              ),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Text(
+                                                    data.docs[index]["username"]
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 8,
-                                        ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
+                                    GestureDetector(
+                                      onTap: () {
+                                        audioPlayer.play(data.docs[index]
+                                                ['preview']
+                                            .toString());
+                                      },
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.35,
+                                            width: double.infinity,
+                                            child: Image.network(
+                                              data.docs[index]['pictureBig']
+                                                  .toString(),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        IconButton(
+                                            icon: data.docs[index]['likes']
+                                                    .contains(user.uid)
+                                                ? const Icon(
+                                                    Icons.favorite,
+                                                    color: Colors.red,
+                                                  )
+                                                : const Icon(
+                                                    Icons.favorite_border,
+                                                  ),
+                                            onPressed: () {
+                                              FireStoreMethods().likePost(
+                                                  data.docs[index]['uid']
+                                                      .toString(),
+                                                  user.uid,
+                                                  data.docs[index]['likes']);
+                                            }),
+                                        IconButton(
+                                            icon: const Icon(
+                                              Icons.comment_outlined,
+                                            ),
+                                            onPressed: () {
+                                              audioPlayer.reset();
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CommentsScreen(
+                                                    postId: data.docs[index]
+                                                            ['uid']
+                                                        .toString(),
+                                                  ),
+                                                ),
+                                              );
+                                            }),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          children: <Widget>[
+                                          children: [
                                             Text(
-                                              data.docs[index]["username"]
-                                                  .toString(),
+                                              "Artiste: " +
+                                                  data.docs[index]["artistName"]
+                                                      .toString(),
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                              "titre: " +
+                                                  data.docs[index]["title"]
+                                                      .toString(),
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ),
-                                    ),
+                                        Expanded(
+                                            child: Align(
+                                          alignment: Alignment.bottomRight,
+                                          child: IconButton(
+                                              icon: const Icon(
+                                                  Icons.bookmark_border),
+                                              onPressed: () {}),
+                                        ))
+                                      ],
+                                    )
                                   ],
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  audioPlayer.play(
-                                      data.docs[index]['preview'].toString());
-                                },
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.35,
-                                      width: double.infinity,
-                                      child: Image.network(
-                                        data.docs[index]['pictureBig']
-                                            .toString(),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  IconButton(
-                                      icon: data.docs[index]['likes']
-                                              .contains(user.uid)
-                                          ? const Icon(
-                                              Icons.favorite,
-                                              color: Colors.red,
-                                            )
-                                          : const Icon(
-                                              Icons.favorite_border,
-                                            ),
-                                      onPressed: () {
-                                        FireStoreMethods().likePost(
-                                            data.docs[index]['uid'].toString(),
-                                            user.uid,
-                                            data.docs[index]['likes']);
-                                      }),
-                                  IconButton(
-                                      icon: const Icon(
-                                        Icons.comment_outlined,
-                                      ),
-                                      onPressed: () {
-                                        audioPlayer.reset();
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                CommentsScreen(
-                                              postId: data.docs[index]['uid']
-                                                  .toString(),
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Artiste: " +
-                                            data.docs[index]["artistName"]
-                                                .toString(),
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        "titre: " +
-                                            data.docs[index]["title"]
-                                                .toString(),
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Expanded(
-                                      child: Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: IconButton(
-                                        icon: const Icon(Icons.bookmark_border),
-                                        onPressed: () {}),
-                                  ))
-                                ],
-                              )
-                            ],
-                          );
+                                );
+                              });
                         });
                   }))
         ],
